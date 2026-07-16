@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Paulo Dourado — Full-Stack Web Developer</title>
+<meta name="description" content="Paulo Dourado — Full-Stack Web Developer. Python/Flask & JavaScript. Creator of Løfte." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&family=Archivo:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="nav-wrap">
+  <nav class="nav">
+    <a href="#home" class="nav-logo">PAULO&nbsp;DOURADO</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">ABOUT</a></li>
+      <li><a href="#projects" class="is-active">PROJECTS</a></li>
+      <li><a href="#skills">SKILLS</a></li>
+      <li><a href="#certifications">CERTIFICATIONS</a></li>
+      <li><a href="#contact">CONTACT</a></li>
+    </ul>
+    <button class="theme-switch" id="themeToggle" type="button" aria-label="Toggle light/dark mode" aria-pressed="false">
+      <span class="theme-switch-dot"></span>
+    </button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section id="home" class="hero">
+    <canvas id="cv-hero" class="field-canvas"></canvas>
+    <div class="hero-inner">
+      <p class="typed-line"><span id="typedText"></span><span class="cursor-blink">▍</span></p>
+      <h1 class="hero-name">
+        <span class="line-wrap"><span class="hero-line" data-line>Paulo</span></span>
+        <span class="line-wrap"><span class="hero-line hero-line-outline" data-line>Dourado</span></span>
+      </h1>
+      <div class="hero-reveal" data-anim="hero">
+        <p class="subtext">Self-taught developer with 10+ years of business experience, now building full-stack web applications.</p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary">VIEW PROJECTS →</a>
+          <a href="#contact" class="btn btn-outline">GET IN TOUCH</a>
+        </div>
+        <div class="hero-stats">
+          <span>EST. 2023 — CS50</span><span>04 BUILDS SHIPPED</span><span>OPEN TO WORK</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section">
+    <div class="section-head">
+      <span class="section-label">01 / ABOUT</span>
+      <span class="section-meta">ACCOUNTING → CODE</span>
+    </div>
+    <div class="about-grid">
+      <div class="bracket-frame">
+        <div class="avatar-placeholder" aria-hidden="true">PD</div>
+        <!-- Swap the div above for: <img src="assets/photo.jpg" alt="Paulo Dourado" class="avatar"> -->
+      </div>
+      <div class="about-content">
+        <p class="about-lead">
+          For over a decade I worked in accounting — precise, deadline-driven work that taught me discipline
+          most self-taught developers don't pick up from a bootcamp alone. In 2023 I started teaching myself
+          to code with Harvard's CS50, and haven't stopped building since. Today I design and ship full-stack
+          web applications, from Stripe-powered eCommerce sites to a SaaS platform with real users.
+        </p>
+        <ul class="timeline">
+          <li><span>2023</span>CS50x (Harvard/edX)</li>
+          <li><span>2024</span>The Complete Web Development Bootcamp</li>
+          <li><span>2026</span>100 Days of Code: Python Pro Bootcamp &amp; building Løfte</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="section">
+    <div class="section-head">
+      <span class="section-label">02 / FEATURED PROJECTS</span>
+      <span class="section-meta">04 BUILDS</span>
+    </div>
+
+    <div id="flagshipSlot"></div>
+    <div class="project-grid" id="projectGrid"></div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="section">
+    <div class="section-head">
+      <span class="section-label">03 / SKILLS</span>
+      <span class="section-meta">14 ENTRIES</span>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-box">
+        <span class="skill-box-label">LANGUAGES</span>
+        <ul class="skill-list">
+          <li>Python</li><li>JavaScript</li><li>HTML5</li><li>CSS3</li><li>SQL</li>
+        </ul>
+      </div>
+      <div class="skill-box">
+        <span class="skill-box-label">FRAMEWORKS &amp; LIBRARIES</span>
+        <ul class="skill-list">
+          <li>Flask</li><li>Jinja2</li>
+        </ul>
+      </div>
+      <div class="skill-box">
+        <span class="skill-box-label">TOOLS</span>
+        <ul class="skill-list">
+          <li>Git/GitHub</li><li>Stripe API</li><li>OAuth 2.0</li><li>SQLite</li><li>PWA/Service Workers</li>
+        </ul>
+      </div>
+      <div class="skill-box skill-box-accent">
+        <span class="skill-box-label">CURRENTLY LEARNING</span>
+        <ul class="skill-list">
+          <li>TypeScript</li><li>Docker</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certifications" class="section">
+    <div class="section-head">
+      <span class="section-label">04 / CERTIFICATIONS</span>
+      <span class="section-meta">03 CREDENTIALS</span>
+    </div>
+    <div class="cert-list">
+      <a class="cert-row" href="https://cs50.harvard.edu/certificates/ee2aefcf-7d56-42eb-a676-3fe7b73a9533" target="_blank" rel="noopener">
+        <span class="cert-year">2023</span>
+        <span class="cert-title">CS50x <em>— HarvardX/edX</em></span>
+        <span class="cert-link">VIEW CREDENTIAL ↗</span>
+      </a>
+      <a class="cert-row" href="https://ude.my/UC-ddca47d0-9b73-4906-b751-0ab85315ee1f" target="_blank" rel="noopener">
+        <span class="cert-year">DEC 2024</span>
+        <span class="cert-title">The Complete 2024 Web Development Bootcamp <em>— Udemy</em></span>
+        <span class="cert-link">VIEW CREDENTIAL ↗</span>
+      </a>
+      <a class="cert-row" href="https://ude.my/UC-b3dc2823-aa3c-48a5-bea1-6a7eb6f5bd18" target="_blank" rel="noopener">
+        <span class="cert-year">JUL 2026</span>
+        <span class="cert-title">100 Days of Code: Python Pro Bootcamp <em>— Udemy</em></span>
+        <span class="cert-link">VIEW CREDENTIAL ↗</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section contact-section">
+    <canvas id="cv-contact" class="field-canvas"></canvas>
+    <div class="contact-inner">
+      <span class="section-label">05 / CONTACT</span>
+      <h2 class="contact-headline">Open to junior full-stack roles and freelance projects.</h2>
+      <p class="subtext">Feel free to reach out.</p>
+      <div class="contact-actions">
+        <a href="mailto:paulodourado22@gmail.com" class="btn btn-primary">EMAIL</a>
+        <a href="https://www.linkedin.com/in/paulo-dourado-335522368" target="_blank" rel="noopener" class="btn btn-outline">LINKEDIN ↗</a>
+        <a href="https://github.com/PauloDourado22" target="_blank" rel="noopener" class="btn btn-outline">GITHUB ↗</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <span>© <span id="year"></span> PAULO DOURADO</span>
+  <a href="#home">BACK TO TOP ↑</a>
+</footer>
+
+<script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
