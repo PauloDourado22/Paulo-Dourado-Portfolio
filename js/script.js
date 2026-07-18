@@ -2,6 +2,10 @@
 document.getElementById("year").textContent = new Date().getFullYear();
 
 // ===== Projects: data-driven so any project can become the flagship =====
+// Screenshots live in assets/screenshots/<project-id>/, one folder per app
+// (e.g. assets/screenshots/sf-store/checkout.png), with plain lowercase
+// filenames — no spaces or accented characters — so paths stay identical
+// between local testing and the GitHub Pages deploy.
 const PROJECTS = [
   {
     id: "lofte",
@@ -10,8 +14,13 @@ const PROJECTS = [
     description:
       "A fitness and personal-training SaaS platform designed and built solo — workout logging, nutrition and step tracking, gamified progress, a trainer/client management system, and Stripe subscriptions.",
     tags: ["Python", "Flask", "OAuth", "Stripe", "PWA"],
-    image: "assets/lofte-screenshot.png",
-    imageAlt: "Løfte landing page — Keep your løfte",
+    // Add more shots here (dashboard, logger, mobile view, etc.) and the
+    // flagship automatically becomes a slideshow — see mediaMarkup() below.
+    images: [
+      { src: "assets/screenshots/lofte/landing.png", alt: "Løfte landing page — Keep your løfte" },
+      { src: "assets/screenshots/lofte/login.png", alt: "Løfte login page" },
+      { src: "assets/screenshots/lofte/dashboard.png", alt: "Løfte dashboard" },
+    ],
     linkLabel: "LIVE DEMO ↗",
     linkHref: "https://lofte-fopx-1dqj.onrender.com",
     note: "Source private — exploring turning this into a product.",
@@ -22,7 +31,7 @@ const PROJECTS = [
     title: "SF_Store",
     description: "A Stripe-powered eCommerce app with product catalog, cart, and checkout.",
     tags: ["Flask", "SQLAlchemy", "Stripe API"],
-    image: null,
+    images: [],
     linkLabel: "VIEW ON GITHUB ↗",
     linkHref: "https://github.com/PauloDourado22/SF_Store",
     note: null,
@@ -33,7 +42,7 @@ const PROJECTS = [
     title: "Cafe-Website",
     description: "A café finder and manager with full CRUD — practicing clean database design and templating.",
     tags: ["Flask", "SQLite", "Jinja2"],
-    image: null,
+    images: [],
     linkLabel: "VIEW ON GITHUB ↗",
     linkHref: "https://github.com/PauloDourado22/Cafe-Website",
     note: null,
@@ -44,7 +53,7 @@ const PROJECTS = [
     title: "football-dashboard",
     description: "A live sports dashboard pulling real-time standings and fixtures from a third-party REST API.",
     tags: ["Flask", "REST API", "JSON"],
-    image: null,
+    images: [],
     linkLabel: "VIEW ON GITHUB ↗",
     linkHref: "https://github.com/PauloDourado22/football-dashboard",
     note: null,
@@ -62,15 +71,40 @@ function tagsMarkup(tags) {
   return tags.map((t) => `<li>[${t}]</li>`).join("");
 }
 
+// Builds the screenshot area for the flagship. Zero images -> the existing
+// placeholder. One image -> a single slide, no controls. 2+ images -> a
+// stack of slides crossfaded with plain CSS opacity (see .slide in
+// style.css) plus a caption bar with prev/next buttons and a counter.
+// No animation library involved on purpose — see initFlagshipSlideshow().
+function mediaMarkup(images) {
+  if (!images || !images.length) {
+    return `<div class="flagship-media"><div class="image-placeholder" aria-hidden="true">Screenshot coming soon</div></div>`;
+  }
+  const slides = images
+    .map(
+      (img, i) =>
+        `<div class="slide${i === 0 ? " is-active" : ""}"><img src="${img.src}" alt="${img.alt}" loading="lazy" /></div>`
+    )
+    .join("");
+  const nav =
+    images.length > 1
+      ? `<div class="media-nav">
+          <span class="media-nav-count">01 / ${String(images.length).padStart(2, "0")}</span>
+          <div class="media-nav-btns">
+            <button type="button" class="media-nav-btn" data-dir="-1" aria-label="Previous screenshot">←</button>
+            <button type="button" class="media-nav-btn" data-dir="1" aria-label="Next screenshot">→</button>
+          </div>
+        </div>`
+      : "";
+  return `<div class="flagship-media">${slides}</div>${nav}`;
+}
+
 function flagshipMarkup(p) {
-  const media = p.image
-    ? `<img src="${p.image}" alt="${p.imageAlt || p.title}" class="project-shot" />`
-    : `<div class="image-placeholder" aria-hidden="true">Screenshot coming soon</div>`;
   const note = p.note ? `<p class="note">${p.note}</p>` : "";
   return `
     <article class="flagship" data-id="${p.id}">
       <span class="flagship-tab">${p.catalog} — FLAGSHIP</span>
-      <div class="flagship-media">${media}</div>
+      ${mediaMarkup(p.images)}
       <div class="flagship-body">
         <h2 class="flagship-title">${p.title}</h2>
         <p>${p.description}</p>
@@ -79,6 +113,28 @@ function flagshipMarkup(p) {
         ${note}
       </div>
     </article>`;
+}
+
+// Wires the prev/next buttons for whichever project is currently the
+// flagship. Called every time renderProjects() runs, since the buttons are
+// fresh DOM nodes each time. No-ops if there's no nav bar (0 or 1 images).
+function initFlagshipSlideshow() {
+  const nav = flagshipSlot.querySelector(".media-nav");
+  if (!nav) return;
+
+  const slides = Array.from(flagshipSlot.querySelectorAll(".slide"));
+  const countEl = nav.querySelector(".media-nav-count");
+  let index = 0;
+
+  function show(next) {
+    index = (next + slides.length) % slides.length; // wrap both directions
+    slides.forEach((s, n) => s.classList.toggle("is-active", n === index));
+    countEl.textContent = `${String(index + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
+  }
+
+  nav.querySelectorAll(".media-nav-btn").forEach((btn) => {
+    btn.addEventListener("click", () => show(index + Number(btn.dataset.dir)));
+  });
 }
 
 function cardMarkup(p) {
@@ -96,6 +152,7 @@ function renderProjects() {
   const [flagshipId, ...cardIds] = projectOrder;
   flagshipSlot.innerHTML = flagshipMarkup(projectById[flagshipId]);
   projectGrid.innerHTML = cardIds.map((id) => cardMarkup(projectById[id])).join("");
+  initFlagshipSlideshow();
 }
 
 function promoteProject(id) {

@@ -314,13 +314,23 @@ ul { list-style: none; margin: 0; padding: 0; }
   margin: 0;
 }
 .flagship-body p { font-size: 16.5px; line-height: 1.7; color: var(--text-muted); max-width: 640px; margin: 0; }
+/* Fixed box so multiple screenshots of different source dimensions can
+   crossfade in place without the container resizing between slides. Ratio
+   is tuned to Løfte's dashboard/login captures (~1.88:1, close to a
+   standard browser window) since that's the shape most app screenshots
+   will share. The landing page shot is a wider crop (2.25:1) — combined
+   with object-fit:contain below, it just gets a thin letterbox bar instead
+   of being cropped, so no screenshot ever loses real content to fit here. */
 .flagship-media {
+  position: relative;
+  aspect-ratio: 3340 / 1778;
   border-bottom: 1px solid var(--accent-line);
   background: var(--border-soft);
+  overflow: hidden;
 }
 .image-placeholder {
   width: 100%;
-  aspect-ratio: 1512 / 808;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -330,16 +340,45 @@ ul { list-style: none; margin: 0; padding: 0; }
   font-family: var(--mono);
   font-size: 12.5px;
 }
-/* Sized to the actual screenshot's aspect ratio (a native-resolution Retina
-   capture, 3312x1472), so the full image shows without cropping instead of
-   being forced into a mismatched box. If you swap in a different screenshot
-   later, update this value to match (width / height of the new image). */
-.project-shot {
-  width: 100%;
-  aspect-ratio: 3312 / 1472;
-  object-fit: cover;
-  display: block;
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.35s ease;
 }
+.slide.is-active { opacity: 1; z-index: 1; }
+.slide img { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+/* Caption bar under the screenshot — only rendered when a project has more
+   than one image. Plain CSS opacity crossfade + this bar is the whole
+   mechanism; no animation library involved. */
+.media-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--accent-line);
+  background: var(--border-soft);
+}
+.media-nav-count { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--text-faint); }
+.media-nav-btns { display: flex; gap: 8px; }
+.media-nav-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.media-nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+
 .note { font-family: var(--mono); font-size: 12px; line-height: 1.6; color: var(--text-footnote); }
 
 .bracket-tags { display: flex; flex-wrap: wrap; gap: 10px; font-family: var(--mono); font-size: 12px; color: var(--tag-text); }
@@ -358,12 +397,9 @@ ul { list-style: none; margin: 0; padding: 0; }
   flex-direction: column;
   gap: 14px;
   cursor: pointer;
-  /* Deliberately never transition `transform` here — the click-to-promote
-     feature animates this same property via GSAP (see flipSlideFrom() in
-     script.js), and a CSS transition racing GSAP for control of the same
-     property causes the element to stall mid-animation. The hover "lift"
-     below uses box-shadow instead so it can stay smooth without touching
-     transform at all. */
+  /* The hover "lift" below uses box-shadow rather than transform, since
+     transform is a common source of animation conflicts elsewhere on the
+     site — keeping it off this property entirely avoids that class of bug. */
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 .project-card:hover {
