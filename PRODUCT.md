@@ -44,7 +44,7 @@ Together, the pitch is: "I can both ship an ambitious personal product and deliv
 ## Brand Commitments
 
 - Name: Paulo Dourado. Site wordmark: "PAULO DOURADO" (nav, mono, uppercase, tracked). Page title: "Paulo Dourado — Full-Stack Web Developer."
-- Tone: confident but understated — "reliable professional," not "flashy startup founder." Paulo is a career-changer from 10+ years in accounting; the tone should read as precise and deadline-disciplined rather than hype-driven.
+- Tone: confident but understated — "reliable professional," not "flashy startup founder." Paulo is a career-changer from 10+ years in accounting; the tone should read as precise and deadline-disciplined rather than hype-driven. On-page copy (as of the September 2026 rewrite) deliberately downplays this backstory — it gets one brief mention in About, not a repeated framing device — so the page leads with skills and shipped output rather than the career-change narrative.
 - Featured products carry their own distinct branding, not meant to be matched by the portfolio's own amber/graphite palette:
   - Løfte: green accent, stylized "ø" (circle-slash), wordmark "løfte," tagline "Keep your løfte."
   - Fade.: neon yellow-green accent on near-black, bold condensed headline type ("GREAT HAIR, ZERO WAIT.").
