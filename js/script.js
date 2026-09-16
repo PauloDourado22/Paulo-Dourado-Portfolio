@@ -1,18 +1,36 @@
 // ===== Footer year =====
 document.getElementById("year").textContent = new Date().getFullYear();
 
+// ===== Language state =====
+// Declared this early because renderProjects() (called from applyLang(),
+// further down) needs currentLang to already exist when it picks each
+// project's description/linkLabel/note for the active language.
+let currentLang = localStorage.getItem("lang") || "en";
+
+// Reads a { en, pt } pair for the current language, falling back to English.
+// Plain strings (project titles, tags — identical in both languages) pass
+// through untouched, so callers don't need to know which fields differ.
+function loc(field) {
+  return field && typeof field === "object" ? field[currentLang] || field.en : field;
+}
+
 // ===== Projects: data-driven so any project can become the flagship =====
 // Screenshots live in assets/screenshots/<project-id>/, one folder per app
 // (e.g. assets/screenshots/sf-store/checkout.png), with plain lowercase
 // filenames — no spaces or accented characters — so paths stay identical
 // between local testing and the GitHub Pages deploy.
+// description/linkLabel/note are { en, pt } pairs — see TRANSLATIONS below
+// for every other piece of site copy (project data gets its own per-field
+// pairs instead of flat i18n keys since each project's copy is unique to it).
 const PROJECTS = [
   {
     id: "lofte",
     catalog: "P.01",
     title: "Løfte",
-    description:
-      "A fitness and personal-training SaaS platform designed and built solo — workout logging, nutrition and step tracking, gamified progress, a trainer/client management system, and Stripe subscriptions.",
+    description: {
+      en: "A fitness and personal-training SaaS platform designed and built solo — workout logging, nutrition and step tracking, gamified progress, a trainer/client management system, and Stripe subscriptions.",
+      pt: "Uma plataforma SaaS de fitness e personal training, desenhada e construída sozinho — registo de treinos, nutrição e passos, progresso gamificado, um sistema de gestão treinador/cliente, e subscrições Stripe.",
+    },
     tags: ["Python", "Flask", "OAuth", "Stripe", "PWA"],
     // Add more shots here (dashboard, logger, mobile view, etc.) and the
     // flagship automatically becomes a slideshow — see mediaMarkup() below.
@@ -21,23 +39,28 @@ const PROJECTS = [
       { src: "assets/screenshots/lofte/login.png", alt: "Løfte login page" },
       { src: "assets/screenshots/lofte/dashboard.png", alt: "Løfte dashboard" },
     ],
-    linkLabel: "LIVE DEMO ↗",
+    linkLabel: { en: "LIVE DEMO ↗", pt: "DEMO AO VIVO ↗" },
     linkHref: "https://lofte-fopx-1dqj.onrender.com",
-    note: "Source private — exploring turning this into a product.",
+    note: {
+      en: "Source private — exploring turning this into a product.",
+      pt: "Código-fonte privado — a explorar transformar isto num produto.",
+    },
   },
   {
     id: "fade",
     catalog: "P.02",
     title: "Fade.",
-    description:
-      "An appointment booking system — customers pick a service, barber, and time slot, and pay a deposit through Stripe. Double-booking is actually prevented, not just discouraged, and payment is confirmed by a verified Stripe webhook, not the browser redirect.",
+    description: {
+      en: "An appointment booking system — customers pick a service, barber, and time slot, and pay a deposit through Stripe. Double-booking is actually prevented, not just discouraged, and payment is confirmed by a verified Stripe webhook, not the browser redirect.",
+      pt: "Um sistema de marcação de horários — os clientes escolhem um serviço, barbeiro e horário, e pagam um sinal através do Stripe. A sobreposição de marcações é realmente impedida, não só desencorajada, e o pagamento é confirmado por um webhook verificado da Stripe, não pelo redirecionamento do browser.",
+    },
     tags: ["Next.js", "Express", "Stripe API"],
     images: [
       { src: "assets/screenshots/fade/crew-menu.png", alt: "Fade. crew and menu listing with prices" },
       { src: "assets/screenshots/fade/booking.png", alt: "Fade. booking flow — date and time slot picker" },
       { src: "assets/screenshots/fade/confirmation.png", alt: "Fade. booking confirmation screen" },
     ],
-    linkLabel: "VIEW ON GITHUB ↗",
+    linkLabel: { en: "VIEW ON GITHUB ↗", pt: "VER NO GITHUB ↗" },
     linkHref: "https://github.com/PauloDourado22/Fade.",
     note: null,
   },
@@ -45,15 +68,17 @@ const PROJECTS = [
     id: "ilda",
     catalog: "P.03",
     title: "ILDA",
-    description:
-      "A café website with a custom mini-CMS — the owner edits homepage copy, opening hours, and the full menu themselves through an admin panel, no redeploy needed.",
+    description: {
+      en: "A café website with a custom mini-CMS — the owner edits homepage copy, opening hours, and the full menu themselves through an admin panel, no redeploy needed.",
+      pt: "Um site de café com um mini-CMS personalizado — o proprietário edita o texto da página inicial, horários e todo o menu através de um painel de administração, sem necessidade de novo deploy.",
+    },
     tags: ["Next.js", "Express", "SQLite"],
     images: [
       { src: "assets/screenshots/ilda/landing.png", alt: "ILDA landing page — \"Where you feel like home\"" },
       { src: "assets/screenshots/ilda/menu-about.png", alt: "ILDA's live, owner-editable daily menu, scrolling into the About/Space gallery" },
       { src: "assets/screenshots/ilda/about-visit.png", alt: "ILDA's About section with hours, contact details, and a mock location map" },
     ],
-    linkLabel: "VIEW ON GITHUB ↗",
+    linkLabel: { en: "VIEW ON GITHUB ↗", pt: "VER NO GITHUB ↗" },
     linkHref: "https://github.com/PauloDourado22/ILDA",
     note: null,
   },
@@ -61,14 +86,16 @@ const PROJECTS = [
     id: "fairweather",
     catalog: "P.04",
     title: "Fairweather",
-    description:
-      "A dashboard aggregating weather, air quality, and daylight data from three third-party APIs into one derived 'outdoor activity score' per city.",
+    description: {
+      en: "A dashboard aggregating weather, air quality, and daylight data from three third-party APIs into one derived 'outdoor activity score' per city.",
+      pt: "Um dashboard que agrega dados de meteorologia, qualidade do ar e luz do dia de três APIs externas numa única 'pontuação de atividade ao ar livre' derivada, por cidade.",
+    },
     tags: ["Next.js", "Node/Express", "REST API"],
     images: [
       { src: "assets/screenshots/fairweather/dashboard.png", alt: "Fairweather dashboard showing outdoor activity scores for five cities" },
       { src: "assets/screenshots/fairweather/score-tuning.png", alt: "Fairweather's score tuning panel with activity presets and weighting sliders" },
     ],
-    linkLabel: "VIEW ON GITHUB ↗",
+    linkLabel: { en: "VIEW ON GITHUB ↗", pt: "VER NO GITHUB ↗" },
     linkHref: "https://github.com/PauloDourado22/Fairweather",
     note: null,
   },
@@ -114,15 +141,16 @@ function mediaMarkup(images) {
 }
 
 function flagshipMarkup(p) {
-  const note = p.note ? `<p class="note">${p.note}</p>` : "";
+  const noteText = loc(p.note);
+  const note = noteText ? `<p class="note">${noteText}</p>` : "";
   return `
     <article class="flagship" data-id="${p.id}">
       ${mediaMarkup(p.images)}
       <div class="flagship-body">
         <h2 class="flagship-title">${p.title}</h2>
-        <p>${p.description}</p>
+        <p>${loc(p.description)}</p>
         <ul class="bracket-tags">${tagsMarkup(p.tags)}</ul>
-        <a href="${p.linkHref}" target="_blank" rel="noopener" class="btn btn-primary btn-sm">${p.linkLabel}</a>
+        <a href="${p.linkHref}" target="_blank" rel="noopener" class="btn btn-primary btn-sm">${loc(p.linkLabel)}</a>
         ${note}
       </div>
     </article>`;
@@ -155,9 +183,9 @@ function cardMarkup(p) {
     <article class="project-card" data-id="${p.id}" tabindex="0" role="button" aria-label="Feature ${p.title} as the flagship project">
       <span class="project-index">${p.catalog}</span>
       <h3>${p.title}</h3>
-      <p>${p.description}</p>
+      <p>${loc(p.description)}</p>
       <ul class="bracket-tags bracket-tags-sm">${tagsMarkup(p.tags)}</ul>
-      <a href="${p.linkHref}" target="_blank" rel="noopener" class="text-link">${p.linkLabel}</a>
+      <a href="${p.linkHref}" target="_blank" rel="noopener" class="text-link">${loc(p.linkLabel)}</a>
     </article>`;
 }
 
@@ -193,8 +221,9 @@ function attachProjectHandlers() {
   });
 }
 
-renderProjects();
-attachProjectHandlers();
+// Rendered once from applyLang() further down (language-switch section)
+// instead of here, so the project grid only builds once per load using
+// whichever language localStorage already remembers.
 
 // ===== Mobile nav toggle =====
 const navToggle = document.getElementById("navToggle");
@@ -276,18 +305,80 @@ themeToggle.addEventListener("click", () => {
 });
 
 // ===== Language switch (EN / PT) =====
+// Reusable site copy that isn't project data (see PROJECTS' { en, pt } fields
+// above) lives here as flat keys, one object per language. Adding a third
+// language later means adding one more key to this object and a matching
+// { en, pt, xx } slot per project field — no other code needs to change.
+const TRANSLATIONS = {
+  en: {
+    navAbout: "ABOUT", navProjects: "PROJECTS", navSkills: "SKILLS", navContact: "CONTACT",
+    heroSubtext: "Full-stack developer building production web apps (Python, JavaScript, React) — self-taught after 10+ years in business/accounting.",
+    heroBtnProjects: "VIEW PROJECTS →", heroBtnContact: "GET IN TOUCH",
+    heroStat1: "04 BUILDS SHIPPED", heroStat2: "OPEN TO WORK",
+    typedLine: "FULL-STACK WEB DEVELOPER  /  PYTHON, JAVASCRIPT & REACT",
+    aboutLabel: "01 / ABOUT", aboutMeta: "ACCOUNTING → CODE",
+    aboutLead: "For over a decade I worked in accounting — precise, deadline-driven work that taught me discipline most self-taught developers don't pick up from a bootcamp alone. In 2023 I started teaching myself to code with Harvard's CS50, and haven't stopped building since. Today I design and ship full-stack web applications, from Stripe-powered eCommerce sites to a SaaS platform with real users.",
+    timeline3: "100 Days of Code: Python Pro Bootcamp & building Løfte",
+    projectsLabel: "02 / FEATURED PROJECTS", projectsMeta: "04 BUILDS",
+    skillsLabel: "03 / SKILLS", skillsMeta: "17 ENTRIES",
+    skillLangs: "LANGUAGES", skillFrameworks: "FRAMEWORKS & LIBRARIES", skillTools: "TOOLS", skillLearning: "CURRENTLY LEARNING",
+    viewCerts: "VIEW CERTIFICATIONS ↓",
+    certsLabel: "04 / CERTIFICATIONS", certsMeta: "03 CREDENTIALS", viewCredential: "VIEW CREDENTIAL ↗",
+    contactLabel: "05 / CONTACT",
+    contactHeadline: "Open to junior full-stack roles and freelance projects.",
+    contactSubtext: "Feel free to reach out.",
+    backToTop: "BACK TO TOP ↑",
+  },
+  pt: {
+    navAbout: "SOBRE", navProjects: "PROJETOS", navSkills: "COMPETÊNCIAS", navContact: "CONTACTO",
+    heroSubtext: "Programador full-stack a construir aplicações web em produção (Python, JavaScript, React) — autodidata depois de mais de 10 anos em contabilidade.",
+    heroBtnProjects: "VER PROJETOS →", heroBtnContact: "ENTRAR EM CONTACTO",
+    heroStat1: "04 PROJETOS LANÇADOS", heroStat2: "DISPONÍVEL PARA TRABALHAR",
+    typedLine: "PROGRAMADOR FULL-STACK  /  PYTHON, JAVASCRIPT & REACT",
+    aboutLabel: "01 / SOBRE", aboutMeta: "CONTABILIDADE → CÓDIGO",
+    aboutLead: "Durante mais de uma década trabalhei em contabilidade — um trabalho preciso e orientado por prazos que me ensinou uma disciplina que a maioria dos programadores autodidatas não adquire só com um bootcamp. Em 2023 comecei a aprender a programar com o CS50 de Harvard, e não parei de construir desde então. Hoje desenho e lanço aplicações web full-stack, desde lojas online com Stripe a uma plataforma SaaS com utilizadores reais.",
+    timeline3: "100 Days of Code: Python Pro Bootcamp e a construir o Løfte",
+    projectsLabel: "02 / PROJETOS EM DESTAQUE", projectsMeta: "04 PROJETOS",
+    skillsLabel: "03 / COMPETÊNCIAS", skillsMeta: "17 ITENS",
+    skillLangs: "LINGUAGENS", skillFrameworks: "FRAMEWORKS E BIBLIOTECAS", skillTools: "FERRAMENTAS", skillLearning: "A APRENDER ATUALMENTE",
+    viewCerts: "VER CERTIFICAÇÕES ↓",
+    certsLabel: "04 / CERTIFICAÇÕES", certsMeta: "03 CREDENCIAIS", viewCredential: "VER CREDENCIAL ↗",
+    contactLabel: "05 / CONTACTO",
+    contactHeadline: "Disponível para cargos full-stack júnior e projetos freelance.",
+    contactSubtext: "Sinta-se à vontade para entrar em contacto.",
+    backToTop: "VOLTAR AO TOPO ↑",
+  },
+};
+
 const langSwitch = document.getElementById("langSwitch");
 const langToggle = document.getElementById("langToggle");
 const langMenu   = document.getElementById("langMenu");
 const langCode   = document.getElementById("langCode");
+const i18nEls    = document.querySelectorAll("[data-i18n]");
+const typedEl    = document.getElementById("typedText");
+// Marks "hasn't finished its first type yet" before applyLang()'s initial
+// call below, so that call skips writing the typed line directly — otherwise
+// it'd flash the full string an instant before initReveals()'s typewriter
+// animation resets and re-types it once GSAP loads from its CDN tag.
+if (typedEl) typedEl.dataset.typing = "true";
 
 function applyLang(lang) {
+  currentLang = lang;
   document.documentElement.lang = lang;
   langCode.textContent = lang.toUpperCase();
   langMenu.querySelectorAll("[data-lang]").forEach(b =>
     b.setAttribute("aria-selected", b.dataset.lang === lang ? "true" : "false"));
   localStorage.setItem("lang", lang);
-  // Hook: swap copy here later (e.g. document.querySelectorAll("[data-i18n]")).
+  i18nEls.forEach((el) => {
+    const key = el.dataset.i18n;
+    if (TRANSLATIONS[lang][key] !== undefined) el.textContent = TRANSLATIONS[lang][key];
+  });
+  // Only overwrites the typed hero line directly (no re-typing animation)
+  // once the initial typewriter has already run — see initReveals() for the
+  // one-time animated version on page load.
+  if (typedEl && !typedEl.dataset.typing) typedEl.textContent = TRANSLATIONS[lang].typedLine;
+  renderProjects();
+  attachProjectHandlers();
 }
 
 function setLangMenu(open) {
@@ -296,7 +387,7 @@ function setLangMenu(open) {
   langToggle.setAttribute("aria-expanded", open ? "true" : "false");
 }
 
-applyLang(localStorage.getItem("lang") || "en");
+applyLang(currentLang);
 
 langToggle.addEventListener("click", () => setLangMenu(langMenu.hidden));
 langMenu.addEventListener("click", e => {
@@ -451,9 +542,14 @@ function initReveals() {
     gsap.from(wrap.children, { y: 36, opacity: 0, duration: 1.1, stagger: 0.12, ease: "power3.out", delay: 0.5 });
   });
 
-  const typedEl = document.getElementById("typedText");
   if (typedEl) {
-    const full = "FULL-STACK WEB DEVELOPER  /  PYTHON, JAVASCRIPT & REACT";
+    // dataset.typing flags "animation in progress" so applyLang() (see the
+    // language-switch section above) knows not to overwrite a mid-type
+    // string if someone switches languages in the first ~2 seconds on page
+    // load — it just waits for this animation to finish and leaves the
+    // completed line to reflect whichever language is active by then.
+    typedEl.dataset.typing = "true";
+    const full = TRANSLATIONS[currentLang].typedLine;
     const obj = { i: 0 };
     gsap.to(obj, {
       i: full.length,
@@ -461,6 +557,10 @@ function initReveals() {
       ease: "none",
       delay: 0.5,
       onUpdate: () => { typedEl.textContent = full.slice(0, Math.round(obj.i)); },
+      onComplete: () => {
+        delete typedEl.dataset.typing;
+        typedEl.textContent = TRANSLATIONS[currentLang].typedLine;
+      },
     });
   }
 }
