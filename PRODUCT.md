@@ -38,7 +38,6 @@ Together, the pitch is: "I can both ship an ambitious personal product and deliv
 - No backend or CMS — content is static; the theme toggle and project-promotion click are the only dynamic behavior.
 - Must remain fully responsive down to ~360px width.
 - No build step required, though GSAP and Three.js load via CDN for hero/contact motion and text reveals.
-- Open gap: a real headshot photo is planned but not yet available — the hero/about section currently shows a "PD" text placeholder. This is a known, temporary gap, not a deliberate permanent design choice; swap in the real photo when it's provided.
 - Both ILDA and Fade. are now complete at 3/3 real screenshots each.
 
 ## Brand Commitments
@@ -56,7 +55,7 @@ Together, the pitch is: "I can both ship an ambitious personal product and deliv
 - **Fairweather** — GitHub repo only, no live deploy. 2 real screenshots (dashboard, score-tuning) in `assets/screenshots/fairweather/`.
 - **ILDA** — GitHub repo only, no live deploy. 3 real screenshots (landing, menu-about, about-visit) in `assets/screenshots/ilda/`; the menu-about screenshot doubles as visual proof of the site's owner-editable mini-CMS, and about-visit shows the Hours/Visit section with its mock location map.
 - Certifications with real, working credential URLs: CS50x (HarvardX/edX, 2023), The Complete 2024 Web Development Bootcamp (Udemy, Dec 2024), 100 Days of Code: Python Pro Bootcamp (Udemy, Jul 2026).
-- No headshot photo yet (see Capabilities and Constraints).
+- Real headshot photo in place at `assets/photo.jpg` (About section).
 - Nothing else exists — future work must not fabricate testimonials, client logos, case-study metrics, or a headshot.
 
 ## Product Principles
