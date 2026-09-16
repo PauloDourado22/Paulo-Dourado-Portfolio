@@ -211,7 +211,6 @@ Every corner in the system is square. `border-radius` is never set to a non-zero
 - Sticky, blurred translucent background (`backdrop-filter: blur(8px)` over 88%-opacity page background), single hairline bottom border, no shadow.
 - Logo and links are IBM Plex Mono, uppercase-tracked; inactive links sit in Slate Faint and shift to Signal Amber on hover or when active.
 - Theme toggle is a pill switch with a sliding circular dot — the system's only rounded shape, functioning exactly like a physical light switch (dot travels left-to-right between dark/light).
-- Language toggle (EN/PT) sits just left of the theme toggle, styled as plain mono nav text rather than a switch: "EN / PT" with a hairline-colored slash divider, Slate Faint by default, Signal Amber on hover or when active — identical treatment to the nav links themselves, not the theme toggle's pill-and-dot. Filled-amber shapes are reserved for primary CTA buttons and the theme toggle's dot; this control isn't either of those, so it doesn't borrow their fill.
 - Mobile (≤700px): links collapse behind a hamburger into a full-width dropdown sharing the page background and a hairline border.
 
 ### Signature Component: Screenshot Slideshow

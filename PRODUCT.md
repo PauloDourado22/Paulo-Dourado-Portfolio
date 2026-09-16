@@ -27,8 +27,7 @@ Together, the pitch is: "I can both ship an ambitious personal product and deliv
 
 ## Operating Context
 
-- Static single HTML/CSS/JS page, anchor-linked sections: Hero, About, Featured Projects, Skills, Certifications, Contact. Sticky nav, smooth scroll, light/dark theme toggle (dark default), English/Portuguese language toggle (English default).
-- Language switching is client-side only, matching the "no build step" constraint: a `TRANSLATIONS` dictionary in `script.js` covers reusable site copy, keyed by `data-i18n` attributes in the HTML; each project's description/link-label/note carries its own `{ en, pt }` pair since that copy is unique per project. Choice persists via `localStorage`, same pattern as the theme toggle. Proper nouns (project names, tech tags, cert institution names) are identical in both languages and aren't tagged.
+- Static single HTML/CSS/JS page, anchor-linked sections: Hero, About, Featured Projects, Skills, Certifications, Contact. Sticky nav, smooth scroll, light/dark theme toggle (dark default).
 - Featured Projects is data-driven: one project is always the "flagship" (full-width, large type, screenshot slideshow when 2+ images exist) and the rest sit in a secondary 3-card grid. Clicking any secondary card promotes it to flagship instantly — deliberately no animation (see Product Principles).
 - Screenshot slideshow: plain CSS opacity crossfade, prev/next buttons + mono counter, no animation library. Images live in `assets/screenshots/<project-id>/` with plain lowercase filenames (no spaces or accented characters, for GitHub Pages path safety). Captured at a fixed 1578×842 viewport via DevTools device toolbar at device pixel ratio 2, so every screenshot shares one aspect ratio (~1.88) and fills the display box without visible cropping or letterboxing.
 - Deployed target: GitHub Pages. No backend, no CMS, no build step.

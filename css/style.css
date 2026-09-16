@@ -120,30 +120,6 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 [data-theme="light"] .theme-switch-dot { transform: translateX(24px); }
 
-/* Matches .nav-links exactly (mono, uppercase-tracked, Slate Faint ->
-   Signal Amber on hover/active) rather than introducing a new filled-pill
-   pattern — the only filled-amber shapes on the page are primary CTA
-   buttons and the theme toggle's dot, and this isn't either of those. */
-.lang-switch {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.lang-option {
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  color: var(--text-faint);
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-.lang-option:hover,
-.lang-option.is-active { color: var(--accent); }
-.lang-divider { font-family: var(--mono); font-size: 12px; color: var(--border-strong); }
-
 .nav-toggle {
   display: none;
   flex-direction: column;
