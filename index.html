@@ -19,11 +19,14 @@
       <span></span><span></span>
     </button>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#about">ABOUT</a></li>
-      <li><a href="#projects">PROJECTS</a></li>
-      <li><a href="#skills">SKILLS</a></li>
-      <li><a href="#contact">CONTACT</a></li>
+      <li><a href="#about" data-i18n="navAbout">ABOUT</a></li>
+      <li><a href="#projects" data-i18n="navProjects">PROJECTS</a></li>
+      <li><a href="#skills" data-i18n="navSkills">SKILLS</a></li>
+      <li><a href="#contact" data-i18n="navContact">CONTACT</a></li>
     </ul>
+    <button class="lang-switch" id="langToggle" type="button" aria-label="Switch language">
+      <span class="lang-option is-active" data-lang="en">EN</span><span class="lang-option" data-lang="pt">PT</span>
+    </button>
     <button class="theme-switch" id="themeToggle" type="button" aria-label="Toggle light/dark mode" aria-pressed="false">
       <span class="theme-switch-dot"></span>
     </button>
@@ -42,13 +45,13 @@
         <span class="line-wrap"><span class="hero-line hero-line-outline" data-line>Dourado</span></span>
       </h1>
       <div class="hero-reveal" data-anim="hero">
-        <p class="subtext">Full-stack developer building production web apps (Python, JavaScript, React) — self-taught after 10+ years in business/accounting.</p>
+        <p class="subtext" data-i18n="heroSubtext">Full-stack developer building production web apps (Python, JavaScript, React) — self-taught after 10+ years in business/accounting.</p>
         <div class="hero-actions">
-          <a href="#projects" class="btn btn-primary">VIEW PROJECTS →</a>
-          <a href="#contact" class="btn btn-outline">GET IN TOUCH</a>
+          <a href="#projects" class="btn btn-primary" data-i18n="heroBtnProjects">VIEW PROJECTS →</a>
+          <a href="#contact" class="btn btn-outline" data-i18n="heroBtnContact">GET IN TOUCH</a>
         </div>
         <div class="hero-stats">
-          <span>04 BUILDS SHIPPED</span><span>OPEN TO WORK</span>
+          <span data-i18n="heroStat1">04 BUILDS SHIPPED</span><span data-i18n="heroStat2">OPEN TO WORK</span>
         </div>
       </div>
     </div>
@@ -57,15 +60,15 @@
   <!-- ABOUT -->
   <section id="about" class="section">
     <div class="section-head">
-      <span class="section-label">01 / ABOUT</span>
-      <span class="section-meta">ACCOUNTING → CODE</span>
+      <span class="section-label" data-i18n="aboutLabel">01 / ABOUT</span>
+      <span class="section-meta" data-i18n="aboutMeta">ACCOUNTING → CODE</span>
     </div>
     <div class="about-grid">
       <div class="bracket-frame">
         <img src="assets/photo.jpg" alt="Paulo Dourado" class="avatar">
       </div>
       <div class="about-content">
-        <p class="about-lead">
+        <p class="about-lead" data-i18n="aboutLead">
           For over a decade I worked in accounting — precise, deadline-driven work that taught me discipline
           most self-taught developers don't pick up from a bootcamp alone. In 2023 I started teaching myself
           to code with Harvard's CS50, and haven't stopped building since. Today I design and ship full-stack
@@ -74,7 +77,7 @@
         <ul class="timeline">
           <li><span>2023</span>CS50x (Harvard/edX)</li>
           <li><span>2024</span>The Complete Web Development Bootcamp</li>
-          <li><span>2026</span>100 Days of Code: Python Pro Bootcamp &amp; building Løfte</li>
+          <li><span>2026</span><span data-i18n="timeline3">100 Days of Code: Python Pro Bootcamp &amp; building Løfte</span></li>
         </ul>
       </div>
     </div>
@@ -83,8 +86,8 @@
   <!-- PROJECTS -->
   <section id="projects" class="section">
     <div class="section-head">
-      <span class="section-label">02 / FEATURED PROJECTS</span>
-      <span class="section-meta">04 BUILDS</span>
+      <span class="section-label" data-i18n="projectsLabel">02 / FEATURED PROJECTS</span>
+      <span class="section-meta" data-i18n="projectsMeta">04 BUILDS</span>
     </div>
 
     <div id="flagshipSlot"></div>
@@ -94,30 +97,30 @@
   <!-- SKILLS -->
   <section id="skills" class="section">
     <div class="section-head">
-      <span class="section-label">03 / SKILLS</span>
-      <span class="section-meta">17 ENTRIES</span>
+      <span class="section-label" data-i18n="skillsLabel">03 / SKILLS</span>
+      <span class="section-meta" data-i18n="skillsMeta">17 ENTRIES</span>
     </div>
     <div class="skills-grid">
       <div class="skill-box">
-        <span class="skill-box-label">LANGUAGES</span>
+        <span class="skill-box-label" data-i18n="skillLangs">LANGUAGES</span>
         <ul class="skill-list">
           <li>Python</li><li>JavaScript</li><li>HTML5</li><li>CSS3</li><li>SQL</li>
         </ul>
       </div>
       <div class="skill-box">
-        <span class="skill-box-label">FRAMEWORKS &amp; LIBRARIES</span>
+        <span class="skill-box-label" data-i18n="skillFrameworks">FRAMEWORKS &amp; LIBRARIES</span>
         <ul class="skill-list">
           <li>Flask</li><li>Jinja2</li><li>Next.js</li><li>Express</li><li>React</li>
         </ul>
       </div>
       <div class="skill-box">
-        <span class="skill-box-label">TOOLS</span>
+        <span class="skill-box-label" data-i18n="skillTools">TOOLS</span>
         <ul class="skill-list">
           <li>Git/GitHub</li><li>Stripe API</li><li>OAuth 2.0</li><li>SQLite</li><li>PWA/Service Workers</li>
         </ul>
       </div>
       <div class="skill-box skill-box-accent">
-        <span class="skill-box-label">CURRENTLY LEARNING</span>
+        <span class="skill-box-label" data-i18n="skillLearning">CURRENTLY LEARNING</span>
         <ul class="skill-list">
           <li>TypeScript</li><li>Docker</li>
         </ul>
@@ -125,30 +128,30 @@
     </div>
     <!-- Certifications no longer has its own top-nav slot (kept the nav to
          4 items); this is the sub-anchor that replaces it. -->
-    <a href="#certifications" class="text-link skills-cert-link">VIEW CERTIFICATIONS ↓</a>
+    <a href="#certifications" class="text-link skills-cert-link" data-i18n="viewCerts">VIEW CERTIFICATIONS ↓</a>
   </section>
 
   <!-- CERTIFICATIONS -->
   <section id="certifications" class="section">
     <div class="section-head">
-      <span class="section-label">04 / CERTIFICATIONS</span>
-      <span class="section-meta">03 CREDENTIALS</span>
+      <span class="section-label" data-i18n="certsLabel">04 / CERTIFICATIONS</span>
+      <span class="section-meta" data-i18n="certsMeta">03 CREDENTIALS</span>
     </div>
     <div class="cert-list">
       <a class="cert-row" href="https://cs50.harvard.edu/certificates/ee2aefcf-7d56-42eb-a676-3fe7b73a9533" target="_blank" rel="noopener">
         <span class="cert-year">2023</span>
         <span class="cert-title">CS50x <em>— HarvardX/edX</em></span>
-        <span class="cert-link">VIEW CREDENTIAL ↗</span>
+        <span class="cert-link" data-i18n="viewCredential">VIEW CREDENTIAL ↗</span>
       </a>
       <a class="cert-row" href="https://ude.my/UC-ddca47d0-9b73-4906-b751-0ab85315ee1f" target="_blank" rel="noopener">
         <span class="cert-year">DEC 2024</span>
         <span class="cert-title">The Complete 2024 Web Development Bootcamp <em>— Udemy</em></span>
-        <span class="cert-link">VIEW CREDENTIAL ↗</span>
+        <span class="cert-link" data-i18n="viewCredential">VIEW CREDENTIAL ↗</span>
       </a>
       <a class="cert-row" href="https://ude.my/UC-b3dc2823-aa3c-48a5-bea1-6a7eb6f5bd18" target="_blank" rel="noopener">
         <span class="cert-year">JUL 2026</span>
         <span class="cert-title">100 Days of Code: Python Pro Bootcamp <em>— Udemy</em></span>
-        <span class="cert-link">VIEW CREDENTIAL ↗</span>
+        <span class="cert-link" data-i18n="viewCredential">VIEW CREDENTIAL ↗</span>
       </a>
     </div>
   </section>
@@ -157,9 +160,9 @@
   <section id="contact" class="section contact-section">
     <canvas id="cv-contact" class="field-canvas"></canvas>
     <div class="contact-inner">
-      <span class="section-label">05 / CONTACT</span>
-      <h2 class="contact-headline">Open to junior full-stack roles and freelance projects.</h2>
-      <p class="subtext">Feel free to reach out.</p>
+      <span class="section-label" data-i18n="contactLabel">05 / CONTACT</span>
+      <h2 class="contact-headline" data-i18n="contactHeadline">Open to junior full-stack roles and freelance projects.</h2>
+      <p class="subtext" data-i18n="contactSubtext">Feel free to reach out.</p>
       <div class="contact-actions">
         <a href="mailto:paulodourado22@gmail.com" class="btn btn-primary">EMAIL</a>
         <a href="https://www.linkedin.com/in/paulo-dourado-335522368" target="_blank" rel="noopener" class="btn btn-outline">LINKEDIN ↗</a>
@@ -172,7 +175,7 @@
 
 <footer class="footer">
   <span>© <span id="year"></span> PAULO DOURADO</span>
-  <a href="#home">BACK TO TOP ↑</a>
+  <a href="#home" data-i18n="backToTop">BACK TO TOP ↑</a>
 </footer>
 
 <script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>

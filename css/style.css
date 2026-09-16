@@ -120,6 +120,27 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 [data-theme="light"] .theme-switch-dot { transform: translateX(24px); }
 
+.lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  padding: 3px;
+  font-family: var(--mono);
+}
+.lang-option {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  color: var(--text-faint);
+  transition: color 0.2s ease, background 0.2s ease;
+}
+.lang-option.is-active { color: var(--bg); background: var(--accent); }
+
 .nav-toggle {
   display: none;
   flex-direction: column;
