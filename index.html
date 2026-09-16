@@ -175,6 +175,16 @@
   <a href="#home">BACK TO TOP ↑</a>
 </footer>
 
+<div class="lang-switch" id="langSwitch">
+  <ul class="lang-menu" id="langMenu" role="listbox" aria-label="Language" hidden>
+    <li><button type="button" role="option" data-lang="en" aria-selected="true"><span>ENGLISH</span><span>EN</span></button></li>
+    <li><button type="button" role="option" data-lang="pt" aria-selected="false"><span>PORTUGUÊS</span><span>PT</span></button></li>
+  </ul>
+  <button type="button" class="lang-btn" id="langToggle" aria-haspopup="listbox" aria-expanded="false" aria-controls="langMenu" aria-label="Change language">
+    <span class="lang-bracket">[</span><span class="lang-code" id="langCode">EN</span><span class="lang-bracket">]</span><span class="lang-caret" aria-hidden="true">▾</span>
+  </button>
+</div>
+
 <script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="js/script.js"></script>

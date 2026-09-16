@@ -213,6 +213,9 @@ Every corner in the system is square. `border-radius` is never set to a non-zero
 - Theme toggle is a pill switch with a sliding circular dot — the system's only rounded shape, functioning exactly like a physical light switch (dot travels left-to-right between dark/light).
 - Mobile (≤700px): links collapse behind a hamburger into a full-width dropdown sharing the page background and a hairline border.
 
+### Language Switch
+A floating `[EN ▾]` bracket readout, fixed bottom-right (16px inset on mobile, 32px on desktop), independent of the nav — a deliberately different placement/idiom from the nav's own theme toggle, since this is a page-level utility rather than a nav item. Clicking it opens a square-cornered dropdown listing ENGLISH/PORTUGUÊS with their two-letter codes, Hairline Strong border, no shadow, selected option in Signal Amber. Currently UI-only (no copy actually swaps yet — see the `applyLang()` hook in `script.js`); choice persists via `localStorage`, same pattern as the theme toggle.
+
 ### Signature Component: Screenshot Slideshow
 The flagship project's media area stacks each screenshot as an absolutely-positioned `.slide`, crossfaded purely via `opacity` (0.35s ease) — deliberately not a library-driven carousel. A caption bar sits below the image (never overlaid on it, to avoid needing a text-legibility scrim over unpredictable screenshot content): a mono `01 / 03`-style counter on the left, two small square bordered prev/next buttons on the right, styled identically to the theme toggle's line weight and hover behavior. The bar and image box both take Amber Line borders. Below 2 images, the whole bar is omitted rather than shown disabled.
 

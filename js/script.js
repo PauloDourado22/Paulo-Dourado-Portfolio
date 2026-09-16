@@ -275,6 +275,43 @@ themeToggle.addEventListener("click", () => {
   applyTheme(next);
 });
 
+// ===== Language switch (EN / PT) =====
+const langSwitch = document.getElementById("langSwitch");
+const langToggle = document.getElementById("langToggle");
+const langMenu   = document.getElementById("langMenu");
+const langCode   = document.getElementById("langCode");
+
+function applyLang(lang) {
+  document.documentElement.lang = lang;
+  langCode.textContent = lang.toUpperCase();
+  langMenu.querySelectorAll("[data-lang]").forEach(b =>
+    b.setAttribute("aria-selected", b.dataset.lang === lang ? "true" : "false"));
+  localStorage.setItem("lang", lang);
+  // Hook: swap copy here later (e.g. document.querySelectorAll("[data-i18n]")).
+}
+
+function setLangMenu(open) {
+  langMenu.hidden = !open;
+  langSwitch.classList.toggle("open", open);
+  langToggle.setAttribute("aria-expanded", open ? "true" : "false");
+}
+
+applyLang(localStorage.getItem("lang") || "en");
+
+langToggle.addEventListener("click", () => setLangMenu(langMenu.hidden));
+langMenu.addEventListener("click", e => {
+  const btn = e.target.closest("[data-lang]");
+  if (!btn) return;
+  applyLang(btn.dataset.lang);
+  setLangMenu(false);
+});
+document.addEventListener("click", e => {
+  if (!langSwitch.contains(e.target)) setLangMenu(false);
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") setLangMenu(false);
+});
+
 // ===== Particle field background (hero + contact canvases) =====
 // Lightweight constellation effect: points drift, nearby points connect with
 // a line, and the cursor gently repels points near it. Runs once THREE and
