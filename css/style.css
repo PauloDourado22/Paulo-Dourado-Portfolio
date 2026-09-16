@@ -5,7 +5,7 @@
   --text: #DEE3E8;
   --text-muted: #8E97A0;
   --text-faint: #7E8790;
-  --text-footnote: #5C646C;
+  --text-footnote: #767D84; /* bumped from #5C646C (~3.2:1) to clear WCAG AA 4.5:1 on --bg */
   --tag-text: #AEB6BE;
   --accent: #E8A63D;
   --accent-hover: #F2C275;
@@ -25,7 +25,7 @@
   --text: #16181B;
   --text-muted: #6E7378;
   --text-faint: #6E7378;
-  --text-footnote: #9A9C96;
+  --text-footnote: #63686D; /* bumped from #9A9C96 (~2.45:1) to clear WCAG AA 4.5:1 on light --bg */
   --tag-text: #4E5257;
   --accent: #A66A00;
   --accent-hover: #8A5800;
@@ -94,6 +94,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 .nav-links a.is-active { color: var(--accent); }
 
 .theme-switch {
+  position: relative;
   width: 52px;
   height: 26px;
   border: 1px solid var(--border-strong);
@@ -101,18 +102,23 @@ ul { list-style: none; margin: 0; padding: 0; }
   background: transparent;
   cursor: pointer;
   padding: 3px;
-  display: flex;
-  align-items: center;
 }
+/* Explicit, narrow exception to the Transform-Free Interaction Rule: this
+   dot is fully isolated from the project-card/flagship-swap elements that
+   rule exists to protect, and transform is the only compositor-friendly
+   way to slide it — see DESIGN.md's Elevation & Depth section. */
 .theme-switch-dot {
+  position: absolute;
+  top: 3px;
+  left: 3px;
   width: 18px;
   height: 18px;
   border-radius: 50%;
   background: var(--accent);
-  margin-left: 0;
-  transition: margin-left 0.2s ease;
+  transform: translateX(0);
+  transition: transform 0.2s ease;
 }
-[data-theme="light"] .theme-switch-dot { margin-left: 24px; }
+[data-theme="light"] .theme-switch-dot { transform: translateX(24px); }
 
 .nav-toggle {
   display: none;
@@ -208,6 +214,7 @@ ul { list-style: none; margin: 0; padding: 0; }
   margin-top: 4px;
 }
 .text-link:hover { color: var(--accent-hover); }
+.skills-cert-link { margin-top: 32px; }
 
 /* ===== Sections ===== */
 .section {
@@ -293,18 +300,10 @@ ul { list-style: none; margin: 0; padding: 0; }
   border: 1px solid var(--accent-line);
   overflow: hidden;
 }
-.flagship-tab {
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  color: var(--bg);
-  background: var(--accent);
-  padding: 6px 12px;
-}
-.flagship-body { padding: 40px 56px 56px; display: flex; flex-direction: column; gap: 22px; }
+/* align-items: flex-start keeps the CTA button hugging its own text width;
+   without it, the default `stretch` forces the normally inline-block .btn
+   to fill the full flagship column. */
+.flagship-body { padding: 40px 56px 56px; display: flex; flex-direction: column; align-items: flex-start; gap: 22px; }
 .flagship-title {
   font-family: var(--display);
   font-weight: 700;

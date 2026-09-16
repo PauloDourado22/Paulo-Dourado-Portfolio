@@ -26,36 +26,50 @@ const PROJECTS = [
     note: "Source private — exploring turning this into a product.",
   },
   {
-    id: "sf-store",
+    id: "fade",
     catalog: "P.02",
-    title: "SF_Store",
-    description: "A Stripe-powered eCommerce app with product catalog, cart, and checkout.",
-    tags: ["Flask", "SQLAlchemy", "Stripe API"],
-    images: [],
+    title: "Fade.",
+    description:
+      "An appointment booking system — customers pick a service, barber, and time slot, and pay a deposit through Stripe. Double-booking is actually prevented, not just discouraged, and payment is confirmed by a verified Stripe webhook, not the browser redirect.",
+    tags: ["Next.js", "Express", "Stripe API"],
+    images: [
+      { src: "assets/screenshots/fade/crew-menu.png", alt: "Fade. crew and menu listing with prices" },
+      { src: "assets/screenshots/fade/booking.png", alt: "Fade. booking flow — date and time slot picker" },
+      { src: "assets/screenshots/fade/confirmation.png", alt: "Fade. booking confirmation screen" },
+    ],
     linkLabel: "VIEW ON GITHUB ↗",
-    linkHref: "https://github.com/PauloDourado22/SF_Store",
+    linkHref: "https://github.com/PauloDourado22/Fade.",
     note: null,
   },
   {
-    id: "cafe-website",
+    id: "ilda",
     catalog: "P.03",
-    title: "Cafe-Website",
-    description: "A café finder and manager with full CRUD — practicing clean database design and templating.",
-    tags: ["Flask", "SQLite", "Jinja2"],
-    images: [],
+    title: "ILDA",
+    description:
+      "A café website with a custom mini-CMS — the owner edits homepage copy, opening hours, and the full menu themselves through an admin panel, no redeploy needed.",
+    tags: ["Next.js", "Express", "SQLite"],
+    images: [
+      { src: "assets/screenshots/ilda/landing.png", alt: "ILDA landing page — \"Where you feel like home\"" },
+      { src: "assets/screenshots/ilda/menu-about.png", alt: "ILDA's live, owner-editable daily menu, scrolling into the About/Space gallery" },
+      { src: "assets/screenshots/ilda/about-visit.png", alt: "ILDA's About section with hours, contact details, and a mock location map" },
+    ],
     linkLabel: "VIEW ON GITHUB ↗",
-    linkHref: "https://github.com/PauloDourado22/Cafe-Website",
+    linkHref: "https://github.com/PauloDourado22/ILDA",
     note: null,
   },
   {
-    id: "football-dashboard",
+    id: "fairweather",
     catalog: "P.04",
-    title: "football-dashboard",
-    description: "A live sports dashboard pulling real-time standings and fixtures from a third-party REST API.",
-    tags: ["Flask", "REST API", "JSON"],
-    images: [],
+    title: "Fairweather",
+    description:
+      "A dashboard aggregating weather, air quality, and daylight data from three third-party APIs into one derived 'outdoor activity score' per city.",
+    tags: ["Next.js", "Node/Express", "REST API"],
+    images: [
+      { src: "assets/screenshots/fairweather/dashboard.png", alt: "Fairweather dashboard showing outdoor activity scores for five cities" },
+      { src: "assets/screenshots/fairweather/score-tuning.png", alt: "Fairweather's score tuning panel with activity presets and weighting sliders" },
+    ],
     linkLabel: "VIEW ON GITHUB ↗",
-    linkHref: "https://github.com/PauloDourado22/football-dashboard",
+    linkHref: "https://github.com/PauloDourado22/Fairweather",
     note: null,
   },
 ];
@@ -103,7 +117,6 @@ function flagshipMarkup(p) {
   const note = p.note ? `<p class="note">${p.note}</p>` : "";
   return `
     <article class="flagship" data-id="${p.id}">
-      <span class="flagship-tab">${p.catalog} — FLAGSHIP</span>
       ${mediaMarkup(p.images)}
       <div class="flagship-body">
         <h2 class="flagship-title">${p.title}</h2>
@@ -194,6 +207,38 @@ navToggle.addEventListener("click", () => {
 navLinks.querySelectorAll("a").forEach((link) => {
   link.addEventListener("click", () => navLinks.classList.remove("open"));
 });
+
+// ===== Nav scroll-spy: highlight whichever section is currently in view =====
+// (previously "PROJECTS" was hardcoded as .is-active in the HTML and never
+// moved; this replaces that with the real current section.)
+const navLinkByHash = new Map(
+  Array.from(navLinks.querySelectorAll("a")).map((link) => [link.getAttribute("href"), link])
+);
+const spySections = Array.from(navLinkByHash.keys())
+  .map((hash) => document.querySelector(hash))
+  .filter(Boolean);
+
+function setActiveNavLink(hash) {
+  navLinkByHash.forEach((link, key) => link.classList.toggle("is-active", key === hash));
+}
+
+if (spySections.length) {
+  const sectionObserver = new IntersectionObserver(
+    (entries) => {
+      // Pick the entry closest to the top of the viewport among those
+      // currently intersecting, so the highlight matches what's actually
+      // being read rather than flickering between overlapping sections.
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+      if (visible.length) {
+        setActiveNavLink(`#${visible[0].target.id}`);
+      }
+    },
+    { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+  );
+  spySections.forEach((section) => sectionObserver.observe(section));
+}
 
 // ===== Theme toggle (dark by default) =====
 const root = document.documentElement;
@@ -371,7 +416,7 @@ function initReveals() {
 
   const typedEl = document.getElementById("typedText");
   if (typedEl) {
-    const full = "FULL-STACK WEB DEVELOPER  /  PYTHON & JAVASCRIPT";
+    const full = "FULL-STACK WEB DEVELOPER  /  PYTHON, JAVASCRIPT & REACT";
     const obj = { i: 0 };
     gsap.to(obj, {
       i: full.length,
