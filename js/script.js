@@ -374,7 +374,9 @@ function applyLanguage(lang) {
     if (TRANSLATIONS[lang][key] !== undefined) el.textContent = TRANSLATIONS[lang][key];
   });
   langToggle.querySelectorAll(".lang-option").forEach((opt) => {
-    opt.classList.toggle("is-active", opt.dataset.lang === lang);
+    const active = opt.dataset.lang === lang;
+    opt.classList.toggle("is-active", active);
+    opt.setAttribute("aria-pressed", active ? "true" : "false");
   });
   if (typedEl && !typedEl.dataset.typing) typedEl.textContent = TRANSLATIONS[lang].typedLine;
   renderProjects();
@@ -383,10 +385,14 @@ function applyLanguage(lang) {
 
 applyLanguage(currentLang);
 
-langToggle.addEventListener("click", () => {
-  const next = currentLang === "en" ? "pt" : "en";
-  localStorage.setItem("lang", next);
-  applyLanguage(next);
+// Two independent buttons (EN / PT) rather than one toggle button — each
+// just sets its own language directly, so clicking the already-active one
+// is a harmless no-op instead of needing extra guard logic.
+langToggle.querySelectorAll(".lang-option").forEach((opt) => {
+  opt.addEventListener("click", () => {
+    localStorage.setItem("lang", opt.dataset.lang);
+    applyLanguage(opt.dataset.lang);
+  });
 });
 
 // ===== Particle field background (hero + contact canvases) =====
