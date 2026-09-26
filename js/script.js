@@ -41,7 +41,11 @@ const PROJECTS = [
       { src: SHOTS + "lofte/login.webp", sm: SHOTS + "lofte/login-1600.webp", w: 3156, h: 1684, alt: { en: "Løfte login page", pt: "Página de início de sessão do Løfte" } },
       { src: SHOTS + "lofte/dashboard.webp", sm: SHOTS + "lofte/dashboard-1600.webp", w: 3340, h: 1778, alt: { en: "Løfte dashboard", pt: "Painel do Løfte" } },
     ],
-    phones: [],
+    phones: [
+      { src: SHOTS + "lofte/lofte-m-landing.webp", w: 780, h: 1688, alt: { en: "Løfte landing page on a phone", pt: "Página inicial do Løfte no telemóvel" } },
+      { src: SHOTS + "lofte/lofte-m-login.webp", w: 780, h: 1688, alt: { en: "Løfte login on a phone", pt: "Início de sessão do Løfte no telemóvel" } },
+      { src: SHOTS + "lofte/lofte-m-dashboard.webp", w: 780, h: 1688, alt: { en: "Løfte dashboard on a phone", pt: "Painel do Løfte no telemóvel" } },
+    ],
   },
   {
     id: "fade", cat: "P.02", title: "Fade.",
