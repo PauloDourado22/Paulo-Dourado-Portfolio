@@ -34,9 +34,9 @@ const PROJECTS = [
       pt: "Código-fonte privado — a explorar transformar isto num produto.",
     },
     shots: [
-      { src: SHOTS + "lofte/dashboard.webp", sm: SHOTS + "lofte/dashboard-1600.webp", w: 3340, h: 1778, alt: { en: "Løfte dashboard", pt: "Painel do Løfte" } },
       { src: SHOTS + "lofte/landing.webp", sm: SHOTS + "lofte/landing-1600.webp", w: 3156, h: 1684, alt: { en: "Løfte landing page — Keep your løfte", pt: "Página inicial do Løfte — Keep your løfte" } },
       { src: SHOTS + "lofte/login.webp", sm: SHOTS + "lofte/login-1600.webp", w: 3156, h: 1684, alt: { en: "Løfte login page", pt: "Página de início de sessão do Løfte" } },
+      { src: SHOTS + "lofte/dashboard.webp", sm: SHOTS + "lofte/dashboard-1600.webp", w: 3340, h: 1778, alt: { en: "Løfte dashboard", pt: "Painel do Løfte" } },
     ],
     phones: [],
   },
