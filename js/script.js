@@ -16,6 +16,9 @@ let currentLang = localStorage.getItem("lang") || "en";
 // its full screenshots; `opens` is the index of that screenshot, so tapping
 // the crop opens the lightbox on the shot it came from.
 //
+// Cards carry `links` (live demo first, then GitHub as `secondary`); the
+// flagship keeps a single `link` since its source is private.
+//
 // `phones` (Løfte only) holds portrait phone captures for the ≤700px swipe
 // row. Until those exist it's empty, and the row falls back to the desktop
 // shots in landscape frames (see .fp-phones--wide in style.css).
@@ -47,7 +50,10 @@ const PROJECTS = [
       pt: "Um sistema de marcação de horários — os clientes escolhem um serviço, barbeiro e horário, e pagam um sinal através do Stripe. A sobreposição de marcações é realmente impedida, não só desencorajada, e o pagamento é confirmado por um webhook verificado da Stripe, não pelo redirecionamento do browser.",
     },
     tags: ["Next.js", "Express", "Stripe API"],
-    link: { href: "https://github.com/PauloDourado22/Fade.", label: { en: "VIEW ON GITHUB", pt: "VER NO GITHUB" } },
+    links: [
+      { href: "https://fade-nu.vercel.app", label: { en: "LIVE DEMO", pt: "DEMO AO VIVO" } },
+      { href: "https://github.com/PauloDourado22/Fade.", label: { en: "VIEW ON GITHUB", pt: "VER NO GITHUB" }, secondary: true },
+    ],
     crop: { src: SHOTS + "fade/crop.webp", w: 1200, h: 900, opens: 0, alt: { en: "Fade. landing page — \"Great hair, zero wait.\"", pt: "Página inicial do Fade. — \"Great hair, zero wait.\"" } },
     shots: [
       { src: SHOTS + "fade/crew-menu.webp", sm: SHOTS + "fade/crew-menu-1600.webp", w: 3156, h: 1684, alt: { en: "Fade. crew and menu listing with prices", pt: "Equipa e menu de serviços do Fade., com preços" } },
@@ -62,7 +68,10 @@ const PROJECTS = [
       pt: "Um site de café com um mini-CMS personalizado — o proprietário edita o texto da página inicial, horários e todo o menu através de um painel de administração, sem necessidade de novo deploy.",
     },
     tags: ["Next.js", "Express", "SQLite"],
-    link: { href: "https://github.com/PauloDourado22/ILDA", label: { en: "VIEW ON GITHUB", pt: "VER NO GITHUB" } },
+    links: [
+      { href: "https://ilda-ruby.vercel.app", label: { en: "LIVE DEMO", pt: "DEMO AO VIVO" } },
+      { href: "https://github.com/PauloDourado22/ILDA", label: { en: "VIEW ON GITHUB", pt: "VER NO GITHUB" }, secondary: true },
+    ],
     crop: { src: SHOTS + "ilda/crop.webp", w: 1200, h: 900, opens: 0, alt: { en: "ILDA landing page — \"Where you feel like home\"", pt: "Página inicial da ILDA — \"Where you feel like home\"" } },
     shots: [
       { src: SHOTS + "ilda/landing.webp", sm: SHOTS + "ilda/landing-1600.webp", w: 3156, h: 1684, alt: { en: "ILDA landing page — \"Where you feel like home\"", pt: "Página inicial da ILDA — \"Where you feel like home\"" } },
@@ -77,7 +86,10 @@ const PROJECTS = [
       pt: "Um dashboard que agrega dados de meteorologia, qualidade do ar e luz do dia de três APIs externas numa única 'pontuação de atividade ao ar livre' derivada, por cidade.",
     },
     tags: ["Next.js", "Node/Express", "REST API"],
-    link: { href: "https://github.com/PauloDourado22/Fairweather", label: { en: "VIEW ON GITHUB", pt: "VER NO GITHUB" } },
+    links: [
+      { href: "https://fairweather-pi.vercel.app", label: { en: "LIVE DEMO", pt: "DEMO AO VIVO" } },
+      { href: "https://github.com/PauloDourado22/Fairweather", label: { en: "VIEW ON GITHUB", pt: "VER NO GITHUB" }, secondary: true },
+    ],
     crop: { src: SHOTS + "fairweather/crop.webp", w: 1200, h: 900, opens: 0, alt: { en: "Fairweather city score cards", pt: "Cartões de pontuação por cidade do Fairweather" } },
     shots: [
       { src: SHOTS + "fairweather/dashboard.webp", sm: SHOTS + "fairweather/dashboard-1600.webp", w: 3344, h: 1774, alt: { en: "Fairweather dashboard showing outdoor activity scores for five cities", pt: "Dashboard do Fairweather com pontuações de atividade ao ar livre para cinco cidades" } },
@@ -146,7 +158,9 @@ function fpCard(p) {
     <div class="fp-card__head"><h3 class="fp-card__title" id="fp-${p.id}">${fpEsc(p.title)}</h3><span class="fp-cat">${p.cat}</span></div>
     <p class="fp-card__desc">${fpEsc(fpT(p.desc))}</p>
     ${fpTags(p.tags)}
-    <a class="fp-link" href="${p.link.href}" target="_blank" rel="noopener"><span>${fpEsc(fpT(p.link.label))}</span><span aria-hidden="true">↗</span></a>
+    <div class="fp-links">
+      ${p.links.map((l) => `<a class="fp-link${l.secondary ? " fp-link--secondary" : ""}" href="${l.href}" target="_blank" rel="noopener"><span>${fpEsc(fpT(l.label))}</span><span aria-hidden="true">↗</span></a>`).join("")}
+    </div>
   </article>`;
 }
 

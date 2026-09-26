@@ -52,9 +52,9 @@ Together, the pitch is: "I can both ship an ambitious personal product and deliv
 ## Evidence on Hand
 
 - **Løfte** — real deployed live demo (`lofte-fopx-1dqj.onrender.com`). 3 real screenshots (landing, login, dashboard) in `assets/screenshots/lofte/`. Source is private; site copy notes this tastefully ("exploring turning this into a product") rather than staying silent about the missing GitHub link.
-- **Fade.** — GitHub repo only, no live deploy. 3 real screenshots (crew-menu, booking, confirmation) in `assets/screenshots/fade/`, complete — the crew-menu shot serves as both the crew/menu listing and the hero/landing image.
-- **Fairweather** — GitHub repo only, no live deploy. 2 real screenshots (dashboard, score-tuning) in `assets/screenshots/fairweather/`.
-- **ILDA** — GitHub repo only, no live deploy. 3 real screenshots (landing, menu-about, about-visit) in `assets/screenshots/ilda/`; the menu-about screenshot doubles as visual proof of the site's owner-editable mini-CMS, and about-visit shows the Hours/Visit section with its mock location map.
+- **Fade.** — live demo (`fade-nu.vercel.app`) plus GitHub repo. 3 real screenshots (crew-menu, booking, confirmation) in `assets/screenshots/fade/`, complete — the crew-menu shot serves as both the crew/menu listing and the hero/landing image.
+- **Fairweather** — live demo (`fairweather-pi.vercel.app`) plus GitHub repo. 2 real screenshots (dashboard, score-tuning) in `assets/screenshots/fairweather/`.
+- **ILDA** — live demo (`ilda-ruby.vercel.app`) plus GitHub repo. 3 real screenshots (landing, menu-about, about-visit) in `assets/screenshots/ilda/`; the menu-about screenshot doubles as visual proof of the site's owner-editable mini-CMS, and about-visit shows the Hours/Visit section with its mock location map.
 - Certifications with real, working credential URLs: CS50x (HarvardX/edX, 2023), The Complete 2024 Web Development Bootcamp (Udemy, Dec 2024), 100 Days of Code: Python Pro Bootcamp (Udemy, Jul 2026).
 - Real headshot photo in place at `assets/photo.jpg` (About section).
 - Nothing else exists — future work must not fabricate testimonials, client logos, case-study metrics, or a headshot.

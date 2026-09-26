@@ -409,12 +409,16 @@ ul { list-style: none; margin: 0; padding: 0; }
 .fp-card__head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 8px; }
 .fp-card__title { margin: 0; font: 700 32px/1 var(--display); letter-spacing: -.03em; }
 .fp-card__desc { margin: 0; font-size: 15px; line-height: 1.6; color: var(--fp-muted); text-wrap: pretty; }
+.fp-links { margin-top: auto; display: flex; flex-direction: column; }
 .fp-link {
-  margin-top: auto; min-height: 48px; display: flex; align-items: center; justify-content: space-between;
+  min-height: 48px; display: flex; align-items: center; justify-content: space-between;
   border-top: 1px solid var(--fp-line1); color: var(--fp-accent); text-decoration: none;
   font: 400 13px/1 var(--mono); letter-spacing: .1em; transition: border-color .15s;
 }
 .fp-link:hover { border-top-color: var(--fp-accent-line); }
+/* GitHub sits under the live demo as the quieter, secondary action. */
+.fp-link--secondary { color: var(--fp-muted); transition: border-color .15s, color .15s; }
+.fp-link--secondary:hover { color: var(--fp-accent); }
 
 /* Lightbox */
 .fp-lb {
