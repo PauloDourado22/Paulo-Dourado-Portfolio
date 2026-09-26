@@ -92,14 +92,17 @@
   </section>
 
   <!-- PROJECTS -->
-  <section id="projects" class="section">
+  <section id="projects" class="section fp">
     <div class="section-head">
       <span class="section-label" data-i18n="projectsLabel">02 / FEATURED PROJECTS</span>
       <span class="section-meta" data-i18n="projectsMeta">04 BUILDS</span>
     </div>
 
-    <div id="flagshipSlot"></div>
-    <div class="project-grid" id="projectGrid"></div>
+    <!-- Both containers are filled from the PROJECTS array in script.js -->
+    <div id="fp-flagship"></div>
+    <p class="fp-rule" id="fp-range">P.02 — P.04</p>
+    <div class="fp-cards" id="fp-cards" data-fp-swipe></div>
+    <div class="fp-bar" id="fp-cards-bar" data-fp-bar aria-hidden="true"></div>
   </section>
 
   <!-- SKILLS -->
@@ -195,6 +198,21 @@
     <span class="lang-bracket">[</span><span class="lang-code" id="langCode">EN</span><span class="lang-bracket">]</span><span class="lang-caret" aria-hidden="true">▾</span>
   </button>
 </div>
+
+<!-- Shared screenshot lightbox for the projects section (native <dialog>:
+     gives us Esc-to-close, focus trapping and a top layer for free). -->
+<dialog class="fp-lb" id="fp-lb" aria-labelledby="fp-lb-title">
+  <div class="fp-lb__bar">
+    <p class="fp-lb__title" id="fp-lb-title"><span class="fp-accent" data-lb-cat></span> · <span data-lb-name></span></p>
+    <button type="button" class="fp-icon" data-lb-close aria-label="Close">✕</button>
+  </div>
+  <ul class="fp-lb__track" data-lb-track></ul>
+  <div class="fp-lb__nav">
+    <button type="button" class="fp-icon" data-lb-prev aria-label="Previous screenshot">←</button>
+    <p class="fp-lb__count" aria-live="polite"><span data-lb-i>01</span> / <span data-lb-n>03</span></p>
+    <button type="button" class="fp-icon" data-lb-next aria-label="Next screenshot">→</button>
+  </div>
+</dialog>
 
 <script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>

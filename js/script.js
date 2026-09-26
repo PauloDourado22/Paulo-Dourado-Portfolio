@@ -2,228 +2,249 @@
 document.getElementById("year").textContent = new Date().getFullYear();
 
 // ===== Language state =====
-// Declared this early because renderProjects() (called from applyLang(),
-// further down) needs currentLang to already exist when it picks each
-// project's description/linkLabel/note for the active language.
+// Read once here; applyLang() (language-switch section) applies it on load,
+// which also renders the Featured Projects in that language.
 let currentLang = localStorage.getItem("lang") || "en";
 
-// Reads a { en, pt } pair for the current language, falling back to English.
-// Plain strings (project titles, tags — identical in both languages) pass
-// through untouched, so callers don't need to know which fields differ.
-function loc(field) {
-  return field && typeof field === "object" ? field[currentLang] || field.en : field;
-}
-
-// ===== Projects: data-driven so any project can become the flagship =====
-// Screenshots live in assets/screenshots/<project-id>/, one folder per app
-// (e.g. assets/screenshots/sf-store/checkout.png), with plain lowercase
-// filenames — no spaces or accented characters — so paths stay identical
-// between local testing and the GitHub Pages deploy.
-// description/linkLabel/note are { en, pt } pairs — see TRANSLATIONS below
-// for every other piece of site copy (project data gets its own per-field
-// pairs instead of flat i18n keys since each project's copy is unique to it).
+// ===== Featured Projects =====
+// Two tiers, both rendered from PROJECTS: the `flagship: true` project (Løfte)
+// as a ledger + contact sheet, the rest as three joined cards. Every image is
+// a <button> that opens the shared #fp-lb <dialog> lightbox on that shot.
+//
+// Images live in assets/screenshots/<project-id>/ as WebP (full size + a
+// -1600 version for srcset). A card's `crop` is a 4:3 detail cut from one of
+// its full screenshots; `opens` is the index of that screenshot, so tapping
+// the crop opens the lightbox on the shot it came from.
+//
+// `phones` (Løfte only) holds portrait phone captures for the ≤700px swipe
+// row. Until those exist it's empty, and the row falls back to the desktop
+// shots in landscape frames (see .fp-phones--wide in style.css).
+const SHOTS = "assets/screenshots/";
 const PROJECTS = [
   {
-    id: "lofte",
-    catalog: "P.01",
-    title: "Løfte",
-    description: {
+    id: "lofte", cat: "P.01", flagship: true, title: "Løfte",
+    desc: {
       en: "A fitness and personal-training SaaS platform designed and built solo — workout logging, nutrition and step tracking, gamified progress, a trainer/client management system, and Stripe subscriptions.",
       pt: "Uma plataforma SaaS de fitness e personal training, desenhada e construída sozinho — registo de treinos, nutrição e passos, progresso gamificado, um sistema de gestão treinador/cliente, e subscrições Stripe.",
     },
     tags: ["Python", "Flask", "OAuth", "Stripe", "PWA"],
-    // Add more shots here (dashboard, logger, mobile view, etc.) and the
-    // flagship automatically becomes a slideshow — see mediaMarkup() below.
-    images: [
-      { src: "assets/screenshots/lofte/landing.png", alt: "Løfte landing page — Keep your løfte" },
-      { src: "assets/screenshots/lofte/login.png", alt: "Løfte login page" },
-      { src: "assets/screenshots/lofte/dashboard.png", alt: "Løfte dashboard" },
-    ],
-    linkLabel: { en: "LIVE DEMO ↗", pt: "DEMO AO VIVO ↗" },
-    linkHref: "https://lofte-fopx-1dqj.onrender.com",
+    link: { href: "https://lofte-fopx-1dqj.onrender.com", label: { en: "LIVE DEMO", pt: "DEMO AO VIVO" } },
     note: {
       en: "Source private — exploring turning this into a product.",
       pt: "Código-fonte privado — a explorar transformar isto num produto.",
     },
+    shots: [
+      { src: SHOTS + "lofte/dashboard.webp", sm: SHOTS + "lofte/dashboard-1600.webp", w: 3340, h: 1778, alt: { en: "Løfte dashboard", pt: "Painel do Løfte" } },
+      { src: SHOTS + "lofte/landing.webp", sm: SHOTS + "lofte/landing-1600.webp", w: 3156, h: 1684, alt: { en: "Løfte landing page — Keep your løfte", pt: "Página inicial do Løfte — Keep your løfte" } },
+      { src: SHOTS + "lofte/login.webp", sm: SHOTS + "lofte/login-1600.webp", w: 3156, h: 1684, alt: { en: "Løfte login page", pt: "Página de início de sessão do Løfte" } },
+    ],
+    phones: [],
   },
   {
-    id: "fade",
-    catalog: "P.02",
-    title: "Fade.",
-    description: {
+    id: "fade", cat: "P.02", title: "Fade.",
+    desc: {
       en: "An appointment booking system — customers pick a service, barber, and time slot, and pay a deposit through Stripe. Double-booking is actually prevented, not just discouraged, and payment is confirmed by a verified Stripe webhook, not the browser redirect.",
       pt: "Um sistema de marcação de horários — os clientes escolhem um serviço, barbeiro e horário, e pagam um sinal através do Stripe. A sobreposição de marcações é realmente impedida, não só desencorajada, e o pagamento é confirmado por um webhook verificado da Stripe, não pelo redirecionamento do browser.",
     },
     tags: ["Next.js", "Express", "Stripe API"],
-    images: [
-      { src: "assets/screenshots/fade/crew-menu.png", alt: "Fade. crew and menu listing with prices" },
-      { src: "assets/screenshots/fade/booking.png", alt: "Fade. booking flow — date and time slot picker" },
-      { src: "assets/screenshots/fade/confirmation.png", alt: "Fade. booking confirmation screen" },
+    link: { href: "https://github.com/PauloDourado22/Fade.", label: { en: "VIEW ON GITHUB", pt: "VER NO GITHUB" } },
+    crop: { src: SHOTS + "fade/crop.webp", w: 1200, h: 900, opens: 1, alt: { en: "Fade. date and time-slot picker", pt: "Seletor de data e horário do Fade." } },
+    shots: [
+      { src: SHOTS + "fade/crew-menu.webp", sm: SHOTS + "fade/crew-menu-1600.webp", w: 3156, h: 1684, alt: { en: "Fade. crew and menu listing with prices", pt: "Equipa e menu de serviços do Fade., com preços" } },
+      { src: SHOTS + "fade/booking.webp", sm: SHOTS + "fade/booking-1600.webp", w: 3156, h: 1684, alt: { en: "Fade. booking flow — date and time slot picker", pt: "Marcação no Fade. — seletor de data e horário" } },
+      { src: SHOTS + "fade/confirmation.webp", sm: SHOTS + "fade/confirmation-1600.webp", w: 3156, h: 1684, alt: { en: "Fade. booking confirmation screen", pt: "Ecrã de confirmação de marcação do Fade." } },
     ],
-    linkLabel: { en: "VIEW ON GITHUB ↗", pt: "VER NO GITHUB ↗" },
-    linkHref: "https://github.com/PauloDourado22/Fade.",
-    note: null,
   },
   {
-    id: "ilda",
-    catalog: "P.03",
-    title: "ILDA",
-    description: {
+    id: "ilda", cat: "P.03", title: "ILDA",
+    desc: {
       en: "A café website with a custom mini-CMS — the owner edits homepage copy, opening hours, and the full menu themselves through an admin panel, no redeploy needed.",
       pt: "Um site de café com um mini-CMS personalizado — o proprietário edita o texto da página inicial, horários e todo o menu através de um painel de administração, sem necessidade de novo deploy.",
     },
     tags: ["Next.js", "Express", "SQLite"],
-    images: [
-      { src: "assets/screenshots/ilda/landing.png", alt: "ILDA landing page — \"Where you feel like home\"" },
-      { src: "assets/screenshots/ilda/menu-about.png", alt: "ILDA's live, owner-editable daily menu, scrolling into the About/Space gallery" },
-      { src: "assets/screenshots/ilda/about-visit.png", alt: "ILDA's About section with hours, contact details, and a mock location map" },
+    link: { href: "https://github.com/PauloDourado22/ILDA", label: { en: "VIEW ON GITHUB", pt: "VER NO GITHUB" } },
+    crop: { src: SHOTS + "ilda/crop.webp", w: 1200, h: 900, opens: 1, alt: { en: "ILDA's owner-editable daily menu", pt: "Menu do dia da ILDA, editado pelo proprietário" } },
+    shots: [
+      { src: SHOTS + "ilda/landing.webp", sm: SHOTS + "ilda/landing-1600.webp", w: 3156, h: 1684, alt: { en: "ILDA landing page — \"Where you feel like home\"", pt: "Página inicial da ILDA — \"Where you feel like home\"" } },
+      { src: SHOTS + "ilda/menu-about.webp", sm: SHOTS + "ilda/menu-about-1600.webp", w: 3156, h: 1684, alt: { en: "ILDA's live, owner-editable daily menu, scrolling into the About/Space gallery", pt: "Menu do dia da ILDA, editável pelo proprietário, a seguir para a galeria do espaço" } },
+      { src: SHOTS + "ilda/about-visit.webp", sm: SHOTS + "ilda/about-visit-1600.webp", w: 3156, h: 1684, alt: { en: "ILDA's About section with hours, contact details, and a mock location map", pt: "Secção Sobre da ILDA com horários, contactos e um mapa de exemplo" } },
     ],
-    linkLabel: { en: "VIEW ON GITHUB ↗", pt: "VER NO GITHUB ↗" },
-    linkHref: "https://github.com/PauloDourado22/ILDA",
-    note: null,
   },
   {
-    id: "fairweather",
-    catalog: "P.04",
-    title: "Fairweather",
-    description: {
+    id: "fairweather", cat: "P.04", title: "Fairweather",
+    desc: {
       en: "A dashboard aggregating weather, air quality, and daylight data from three third-party APIs into one derived 'outdoor activity score' per city.",
       pt: "Um dashboard que agrega dados de meteorologia, qualidade do ar e luz do dia de três APIs externas numa única 'pontuação de atividade ao ar livre' derivada, por cidade.",
     },
     tags: ["Next.js", "Node/Express", "REST API"],
-    images: [
-      { src: "assets/screenshots/fairweather/dashboard.png", alt: "Fairweather dashboard showing outdoor activity scores for five cities" },
-      { src: "assets/screenshots/fairweather/score-tuning.png", alt: "Fairweather's score tuning panel with activity presets and weighting sliders" },
+    link: { href: "https://github.com/PauloDourado22/Fairweather", label: { en: "VIEW ON GITHUB", pt: "VER NO GITHUB" } },
+    crop: { src: SHOTS + "fairweather/crop.webp", w: 1200, h: 900, opens: 0, alt: { en: "Fairweather city score cards", pt: "Cartões de pontuação por cidade do Fairweather" } },
+    shots: [
+      { src: SHOTS + "fairweather/dashboard.webp", sm: SHOTS + "fairweather/dashboard-1600.webp", w: 3344, h: 1774, alt: { en: "Fairweather dashboard showing outdoor activity scores for five cities", pt: "Dashboard do Fairweather com pontuações de atividade ao ar livre para cinco cidades" } },
+      { src: SHOTS + "fairweather/score-tuning.webp", sm: SHOTS + "fairweather/score-tuning-1600.webp", w: 3342, h: 1770, alt: { en: "Fairweather's score tuning panel with activity presets and weighting sliders", pt: "Painel de ajuste da pontuação do Fairweather, com predefinições e pesos" } },
     ],
-    linkLabel: { en: "VIEW ON GITHUB ↗", pt: "VER NO GITHUB ↗" },
-    linkHref: "https://github.com/PauloDourado22/Fairweather",
-    note: null,
   },
 ];
 
-// order[0] is always whichever project is currently shown as the flagship
-let projectOrder = PROJECTS.map((p) => p.id);
-const projectById = Object.fromEntries(PROJECTS.map((p) => [p.id, p]));
+const FP_UI = {
+  en: { open: "Open screenshot", close: "Close", prev: "Previous screenshot", next: "Next screenshot" },
+  pt: { open: "Abrir captura de ecrã", close: "Fechar", prev: "Captura anterior", next: "Captura seguinte" },
+};
+let fpLang = "en";
+const fpT = (v, lang = fpLang) => (typeof v === "string" ? v : v[lang] ?? v.en);
+// Escapes anything interpolated into HTML strings below.
+const fpEsc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const fpPad = (n) => String(n).padStart(2, "0");
+const FP_CORNERS = ["tl", "tr", "bl", "br"].map((c) => `<span class="fp-corner fp-corner--${c}"></span>`).join("");
 
-const flagshipSlot = document.getElementById("flagshipSlot");
-const projectGrid = document.getElementById("projectGrid");
-
-function tagsMarkup(tags) {
-  return tags.map((t) => `<li>[${t}]</li>`).join("");
+function fpImg(img, sizes) {
+  const srcset = img.sm ? ` srcset="${img.sm} 1600w, ${img.src} ${img.w}w" sizes="${sizes}"` : "";
+  return `<img src="${img.src}"${srcset} width="${img.w}" height="${img.h}" alt="${fpEsc(fpT(img.alt))}" loading="lazy" decoding="async">`;
 }
-
-// Builds the screenshot area for the flagship. Zero images -> the existing
-// placeholder. One image -> a single slide, no controls. 2+ images -> a
-// stack of slides crossfaded with plain CSS opacity (see .slide in
-// style.css) plus a caption bar with prev/next buttons and a counter.
-// No animation library involved on purpose — see initFlagshipSlideshow().
-function mediaMarkup(images) {
-  if (!images || !images.length) {
-    return `<div class="flagship-media"><div class="image-placeholder" aria-hidden="true">Screenshot coming soon</div></div>`;
-  }
-  const slides = images
-    .map(
-      (img, i) =>
-        `<div class="slide${i === 0 ? " is-active" : ""}"><img src="${img.src}" alt="${img.alt}" loading="lazy" /></div>`
-    )
-    .join("");
-  const nav =
-    images.length > 1
-      ? `<div class="media-nav">
-          <span class="media-nav-count">01 / ${String(images.length).padStart(2, "0")}</span>
-          <div class="media-nav-btns">
-            <button type="button" class="media-nav-btn" data-dir="-1" aria-label="Previous screenshot">←</button>
-            <button type="button" class="media-nav-btn" data-dir="1" aria-label="Next screenshot">→</button>
-          </div>
-        </div>`
-      : "";
-  return `<div class="flagship-media">${slides}</div>${nav}`;
+function fpShot(p, set, i, img, cls, sizes, extra = "") {
+  const label = `${FP_UI[fpLang].open}: ${fpT(img.alt)}`;
+  return `<button type="button" class="fp-shot ${cls}" data-fp="${p.id}" data-set="${set}" data-i="${i}" aria-label="${fpEsc(label)}">${fpImg(img, sizes)}${extra}</button>`;
 }
+const fpTags = (tags) => `<ul class="fp-tags">${tags.map((t) => `<li>[${fpEsc(t)}]</li>`).join("")}</ul>`;
 
-function flagshipMarkup(p) {
-  const noteText = loc(p.note);
-  const note = noteText ? `<p class="note">${noteText}</p>` : "";
+function fpFlagship(p) {
+  const rest = p.shots.slice(1).map((s, k) =>
+    fpShot(p, "shots", k + 1, s, "", "(max-width: 960px) 45vw, 354px", `<span class="fp-num">${fpPad(k + 2)}</span>`)).join("");
+  // Mobile row: phone captures if we have them, otherwise the desktop shots.
+  const hasPhones = p.phones && p.phones.length > 0;
+  const rowSet = hasPhones ? "phones" : "shots";
+  const rowImgs = p[rowSet];
+  const row = rowImgs.map((s, k) =>
+    `<div class="fp-phone">${fpShot(p, rowSet, k, s, "fp-shot--phone", hasPhones ? "250px" : "340px")}</div>`).join("");
   return `
-    <article class="flagship" data-id="${p.id}">
-      ${mediaMarkup(p.images)}
-      <div class="flagship-body">
-        <h2 class="flagship-title">${p.title}</h2>
-        <p>${loc(p.description)}</p>
-        <ul class="bracket-tags">${tagsMarkup(p.tags)}</ul>
-        <a href="${p.linkHref}" target="_blank" rel="noopener" class="btn btn-primary btn-sm">${loc(p.linkLabel)}</a>
-        ${note}
+  <article class="fp-flag" aria-labelledby="fp-${p.id}">
+    <header class="fp-flag__head">
+      <span class="fp-cat">${p.cat}</span>
+      <h3 class="fp-flag__title" id="fp-${p.id}">${fpEsc(p.title)}</h3>
+      <p class="fp-flag__desc">${fpEsc(fpT(p.desc))}</p>
+    </header>
+    <div class="fp-flag__media">
+      <div class="fp-sheet">
+        <div class="fp-sheet__lead">${FP_CORNERS}${fpShot(p, "shots", 0, p.shots[0], "", "(max-width: 960px) 92vw, 720px", '<span class="fp-num">01</span>')}</div>
+        ${rest}
       </div>
-    </article>`;
+      <div class="fp-phones${hasPhones ? "" : " fp-phones--wide"}" data-fp-swipe>${row}</div>
+      <div class="fp-bar" data-fp-bar aria-hidden="true">${rowImgs.map(() => "<span></span>").join("")}</div>
+    </div>
+    <ul class="fp-ledger">
+      <li>${fpTags(p.tags)}</li>
+      ${p.note ? `<li class="fp-note">${fpEsc(fpT(p.note))}</li>` : ""}
+      <li><a class="fp-btn" href="${p.link.href}" target="_blank" rel="noopener">${fpEsc(fpT(p.link.label))} <span aria-hidden="true">↗</span></a></li>
+    </ul>
+  </article>`;
 }
 
-// Wires the prev/next buttons for whichever project is currently the
-// flagship. Called every time renderProjects() runs, since the buttons are
-// fresh DOM nodes each time. No-ops if there's no nav bar (0 or 1 images).
-function initFlagshipSlideshow() {
-  const nav = flagshipSlot.querySelector(".media-nav");
-  if (!nav) return;
-
-  const slides = Array.from(flagshipSlot.querySelectorAll(".slide"));
-  const countEl = nav.querySelector(".media-nav-count");
-  let index = 0;
-
-  function show(next) {
-    index = (next + slides.length) % slides.length; // wrap both directions
-    slides.forEach((s, n) => s.classList.toggle("is-active", n === index));
-    countEl.textContent = `${String(index + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
-  }
-
-  nav.querySelectorAll(".media-nav-btn").forEach((btn) => {
-    btn.addEventListener("click", () => show(index + Number(btn.dataset.dir)));
-  });
-}
-
-function cardMarkup(p) {
+function fpCard(p) {
   return `
-    <article class="project-card" data-id="${p.id}" tabindex="0" role="button" aria-label="Feature ${p.title} as the flagship project">
-      <span class="project-index">${p.catalog}</span>
-      <h3>${p.title}</h3>
-      <p>${loc(p.description)}</p>
-      <ul class="bracket-tags bracket-tags-sm">${tagsMarkup(p.tags)}</ul>
-      <a href="${p.linkHref}" target="_blank" rel="noopener" class="text-link">${loc(p.linkLabel)}</a>
-    </article>`;
+  <article class="fp-card" aria-labelledby="fp-${p.id}">
+    ${fpShot(p, "shots", p.crop.opens ?? 0, p.crop, "fp-shot--crop", "(max-width: 700px) 310px, (max-width: 960px) 340px, 384px")}
+    <div class="fp-card__head"><h3 class="fp-card__title" id="fp-${p.id}">${fpEsc(p.title)}</h3><span class="fp-cat">${p.cat}</span></div>
+    <p class="fp-card__desc">${fpEsc(fpT(p.desc))}</p>
+    ${fpTags(p.tags)}
+    <a class="fp-link" href="${p.link.href}" target="_blank" rel="noopener"><span>${fpEsc(fpT(p.link.label))}</span><span aria-hidden="true">↗</span></a>
+  </article>`;
 }
 
-function renderProjects() {
-  const [flagshipId, ...cardIds] = projectOrder;
-  flagshipSlot.innerHTML = flagshipMarkup(projectById[flagshipId]);
-  projectGrid.innerHTML = cardIds.map((id) => cardMarkup(projectById[id])).join("");
-  initFlagshipSlideshow();
-}
-
-function promoteProject(id) {
-  const idx = projectOrder.indexOf(id);
-  if (idx <= 0) return; // already the flagship, or unknown id
-
-  // Swap: clicked project becomes the flagship, previous flagship takes its spot
-  [projectOrder[0], projectOrder[idx]] = [projectOrder[idx], projectOrder[0]];
-  renderProjects();
-  attachProjectHandlers();
-}
-
-function attachProjectHandlers() {
-  projectGrid.querySelectorAll(".project-card").forEach((card) => {
-    card.addEventListener("click", (e) => {
-      if (e.target.closest("a")) return; // let the GitHub/demo link navigate normally
-      promoteProject(card.dataset.id);
-    });
-    card.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        promoteProject(card.dataset.id);
-      }
-    });
+// Keeps each swipe row's segmented bar (and the active frame) in sync with
+// its scroll position. Listeners bind once per row element.
+function fpInitSwipes() {
+  document.querySelectorAll("[data-fp-swipe]").forEach((row) => {
+    const bar = row.nextElementSibling?.matches("[data-fp-bar]") ? row.nextElementSibling : null;
+    const update = () => {
+      const items = [...row.children];
+      // Skip while the row is hidden (display:none at wider breakpoints):
+      // its widths read as 0 and would mark the LAST item active.
+      if (!items.length || row.clientWidth === 0) return;
+      const step = items[1] ? items[1].offsetLeft - items[0].offsetLeft : 1;
+      let i = Math.round(row.scrollLeft / step);
+      if (row.scrollLeft + row.clientWidth >= row.scrollWidth - 2) i = items.length - 1;
+      i = Math.max(0, Math.min(items.length - 1, i));
+      items.forEach((el, k) => el.classList.toggle("is-active", k === i));
+      bar?.querySelectorAll("span").forEach((s, k) => s.classList.toggle("is-active", k === i));
+    };
+    if (!row.dataset.fpBound) {
+      row.dataset.fpBound = "1";
+      let raf = 0;
+      row.addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; update(); }); }, { passive: true });
+    }
+    update();
   });
 }
+// A row can go from hidden to visible on resize/rotate (e.g. crossing 700px),
+// so re-sync the bars then too.
+let fpResizeRaf = 0;
+window.addEventListener("resize", () => {
+  if (!fpResizeRaf) fpResizeRaf = requestAnimationFrame(() => { fpResizeRaf = 0; fpInitSwipes(); });
+});
 
-// Rendered once from applyLang() further down (language-switch section)
-// instead of here, so the project grid only builds once per load using
-// whichever language localStorage already remembers.
+// Called from applyLang() (language-switch section) on load and on every
+// language change, so both tiers and the lightbox labels follow EN/PT.
+function renderProjects(lang = fpLang) {
+  fpLang = FP_UI[lang] ? lang : "en";
+  const flag = PROJECTS.find((p) => p.flagship);
+  const rest = PROJECTS.filter((p) => !p.flagship);
+  document.getElementById("fp-flagship").innerHTML = fpFlagship(flag);
+  document.getElementById("fp-cards").innerHTML = rest.map(fpCard).join("");
+  document.getElementById("fp-cards-bar").innerHTML = rest.map(() => "<span></span>").join("");
+  document.getElementById("fp-range").textContent = `${rest[0].cat} — ${rest[rest.length - 1].cat}`;
+  const ui = FP_UI[fpLang];
+  fpLb.querySelector("[data-lb-close]").setAttribute("aria-label", ui.close);
+  fpLb.querySelector("[data-lb-prev]").setAttribute("aria-label", ui.prev);
+  fpLb.querySelector("[data-lb-next]").setAttribute("aria-label", ui.next);
+  fpInitSwipes();
+}
+
+// ----- Lightbox -----
+const fpLb = document.getElementById("fp-lb");
+const fpTrack = fpLb.querySelector("[data-lb-track]");
+let fpCount = 0, fpTrigger = null;
+const fpIndex = () => Math.round(fpTrack.scrollLeft / Math.max(1, fpTrack.clientWidth));
+function fpLbUpdate() {
+  const i = fpIndex();
+  fpLb.querySelector("[data-lb-i]").textContent = fpPad(i + 1);
+  fpLb.querySelector("[data-lb-prev]").disabled = i <= 0;
+  fpLb.querySelector("[data-lb-next]").disabled = i >= fpCount - 1;
+}
+function fpLbGo(d) {
+  const i = Math.max(0, Math.min(fpCount - 1, fpIndex() + d));
+  fpTrack.scrollTo({ left: i * fpTrack.clientWidth }); // CSS scroll-behavior handles smoothing / reduced motion
+}
+function fpOpen(p, set, i, trigger) {
+  const imgs = p[set];
+  fpCount = imgs.length; fpTrigger = trigger;
+  fpLb.querySelector("[data-lb-cat]").textContent = p.cat;
+  fpLb.querySelector("[data-lb-name]").textContent = p.title;
+  fpLb.querySelector("[data-lb-n]").textContent = fpPad(imgs.length);
+  fpTrack.innerHTML = imgs.map((img) =>
+    `<li class="fp-lb__slide"><img src="${img.src}" width="${img.w}" height="${img.h}" alt="${fpEsc(fpT(img.alt))}" decoding="async"></li>`).join("");
+  fpLb.showModal();
+  fpTrack.scrollTo({ left: i * fpTrack.clientWidth, behavior: "instant" });
+  fpLbUpdate();
+}
+
+document.addEventListener("click", (e) => {
+  const b = e.target.closest(".fp-shot");
+  if (!b) return;
+  const p = PROJECTS.find((x) => x.id === b.dataset.fp);
+  if (p) fpOpen(p, b.dataset.set, Number(b.dataset.i), b);
+});
+fpLb.querySelector("[data-lb-close]").addEventListener("click", () => fpLb.close());
+fpLb.querySelector("[data-lb-prev]").addEventListener("click", () => fpLbGo(-1));
+fpLb.querySelector("[data-lb-next]").addEventListener("click", () => fpLbGo(1));
+fpLb.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowLeft") { e.preventDefault(); fpLbGo(-1); }
+  if (e.key === "ArrowRight") { e.preventDefault(); fpLbGo(1); }
+});
+fpLb.addEventListener("click", (e) => { // tap outside the image closes
+  if (e.target === fpLb || e.target.classList.contains("fp-lb__slide")) fpLb.close();
+});
+fpTrack.addEventListener("scroll", () => requestAnimationFrame(fpLbUpdate), { passive: true });
+fpLb.addEventListener("close", () => { fpTrack.innerHTML = ""; fpTrigger?.focus(); });
 
 // ===== Mobile nav toggle =====
 const navToggle = document.getElementById("navToggle");
@@ -377,8 +398,7 @@ function applyLang(lang) {
   // once the initial typewriter has already run — see initReveals() for the
   // one-time animated version on page load.
   if (typedEl && !typedEl.dataset.typing) typedEl.textContent = TRANSLATIONS[lang].typedLine;
-  renderProjects();
-  attachProjectHandlers();
+  renderProjects(lang);
 }
 
 function setLangMenu(open) {

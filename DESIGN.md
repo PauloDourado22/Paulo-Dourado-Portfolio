@@ -116,7 +116,7 @@ Confirmed anti-references (explicit, from the original design brief): no default
 - Zero border-radius anywhere except the literal light/dark toggle switch.
 - Flat at rest; the only shadow in the system is a hover-triggered lift, never ambient.
 - Every label, tag, nav item, and button is set in mono and often letter-spaced, separating "instrument readout" text from actual prose.
-- The Featured Projects section is data-driven: any project can become the large "flagship" display, and its screenshots (when there are 2+) crossfade in a plain-CSS slideshow — the site's one interactive, non-hover-triggered mechanism.
+- The Featured Projects section is two-tiered and data-driven: Løfte as a flagship "ledger + contact sheet" (all three screenshots visible at once), then P.02–P.04 as three joined cards led by 4:3 detail crops. Every screenshot opens a shared full-screen lightbox.
 
 ## Colors
 
@@ -164,16 +164,16 @@ Content sections cap at 1240px; the nav and footer run slightly wider at 1440px,
 
 Two breakpoints govern the whole site: **960px** (About and Skills grids collapse from multi-column to single/paired columns; the project grid drops from 3 columns to 1) and **700px** (nav collapses to a hamburger + slide-down menu, section padding tightens, cert rows and skill boxes stack).
 
-The Featured Projects grid is the one place layout is data-driven rather than fixed: a full-width flagship slot sits above a `repeat(3, 1fr)` grid of secondary cards (1 column under 960px). Clicking any secondary card swaps it into the flagship slot and demotes the previous flagship back into the grid — instantly, with no transition (see Elevation & Depth's motion note).
+The Featured Projects section is the one place layout is data-driven rather than fixed. Tier 1 is a 5/12 + 7/12 grid: title, description and a rule-separated ledger (tags, note, CTA) on the left; a contact sheet on the right (one 16:9 lead shot with amber bracket corners over two 16:10 shots). Tier 2, introduced by a mono `P.02 — P.04` rule, is three cards sharing one bordered row. Under 960px Tier 1 stacks and Tier 2 becomes a CSS scroll-snap swipe row with the next card peeking; under 700px the contact sheet becomes a swipe row too (phone captures when available, desktop shots in landscape frames until then). Swipe rows carry a segmented amber progress bar. There is no click-to-promote anymore — every project is always visible.
 
 Recurring spacing rhythm: 8px for tight internal list gaps (skill list items), 24px for card/grid gaps and timeline columns, 32px for card internal padding, 48px for section-head margins, 88px for section-level rhythm.
 
 ## Elevation & Depth
 
-The system is flat at rest. There is exactly one shadow in the entire codebase: a soft, diffuse lift (`box-shadow: 0 14px 28px -18px rgba(0,0,0,0.55)`) that appears only on `.project-card:hover`. Depth everywhere else is conveyed by layering three hairline border opacities (soft/default/strong), not by shadow or color shift.
+The system is flat at rest. No surface carries a drop shadow; interactive feedback on Featured Projects uses inset `box-shadow` instead (a 1px inset ring on card hover, an inset fill on the CTA hover). Depth everywhere is conveyed by layering three hairline border opacities (soft/default/strong), not by shadow or color shift.
 
 ### Shadow Vocabulary
-- **Hover Lift** (`box-shadow: 0 14px 28px -18px rgba(0, 0, 0, 0.55)`): the only elevation event in the system. Applies on hover to secondary project cards, paired with a border-color shift to Amber Line.
+- **Inset Ring** (`box-shadow: inset 0 0 0 1px var(--border-strong)`): card hover in the Featured Projects Tier 2 row — reads as the border firming up, never as elevation. (The earlier outer Hover Lift was retired with the old project grid.)
 - **Focus Ring** (`box-shadow: 0 0 0 2px var(--accent-line)`): not true elevation, but the same mechanism — used on `:focus-visible` in place of a default outline.
 
 ### The Flat-By-Default Rule
@@ -203,9 +203,9 @@ Every corner in the system is square. `border-radius` is never set to a non-zero
 ### Cards / Containers
 - **Corner Style:** square (`{rounded.none}`), always.
 - **Background:** transparent — cards are defined entirely by their border, not a fill color.
-- **Shadow Strategy:** none at rest; Hover Lift on secondary project cards only (see Elevation & Depth). The flagship card and skill boxes never lift.
-- **Border:** secondary cards use Hairline (default); the flagship card and its media caption bar use Amber Line, marking it as the featured item at a glance even before reading any text.
-- **Internal Padding:** 36px 32px for secondary cards; the flagship body uses a slightly larger, asymmetric 40px 56px 56px.
+- **Shadow Strategy:** none at rest and no outer shadows at all; Tier 2 project cards firm up with an inset 1px ring on hover.
+- **Border:** Tier 2 cards share one Hairline-bordered row with Hairline dividers; screenshots sit in Hairline frames on a dark plate, and the Tier 1 lead shot is marked with four amber bracket corners rather than an Amber Line outline.
+- **Internal Padding:** 20px (16px on mobile) inside Tier 2 cards; Tier 1 has no card box at all — its structure comes from the grid and ledger rules.
 
 ### Navigation
 - Sticky, blurred translucent background (`backdrop-filter: blur(8px)` over 88%-opacity page background), single hairline bottom border, no shadow.
@@ -216,8 +216,8 @@ Every corner in the system is square. `border-radius` is never set to a non-zero
 ### Language Switch
 A floating `[EN ▾]` bracket readout, fixed bottom-right (16px inset on mobile, 32px on desktop), independent of the nav — a deliberately different placement/idiom from the nav's own theme toggle, since this is a page-level utility rather than a nav item. Clicking it opens a square-cornered dropdown listing ENGLISH/PORTUGUÊS with their two-letter codes, Hairline Strong border, no shadow, selected option in Signal Amber. Translates the page's reusable copy via a `TRANSLATIONS` dictionary keyed by `data-i18n` attributes, plus per-project `{ en, pt }` fields for descriptions/link labels/notes; proper nouns (project names, tech tags, cert institutions) are identical in both languages and aren't tagged. Choice persists via `localStorage`, same pattern as the theme toggle.
 
-### Signature Component: Screenshot Slideshow
-The flagship project's media area stacks each screenshot as an absolutely-positioned `.slide`, crossfaded purely via `opacity` (0.35s ease) — deliberately not a library-driven carousel. A caption bar sits below the image (never overlaid on it, to avoid needing a text-legibility scrim over unpredictable screenshot content): a mono `01 / 03`-style counter on the left, two small square bordered prev/next buttons on the right, styled identically to the theme toggle's line weight and hover behavior. The bar and image box both take Amber Line borders. Below 2 images, the whole bar is omitted rather than shown disabled.
+### Signature Component: Project Contact Sheet + Lightbox
+Løfte's screenshots are laid out like a photographer's contact sheet: a 16:9 lead frame with amber bracket corners and a mono `01` number chip, over two 16:10 frames numbered `02`/`03`, all visible at once instead of hidden behind slideshow arrows. Every screenshot (and every Tier 2 detail crop) is a `<button>` that opens one shared native `<dialog>` lightbox: solid page-colored background, a mono title bar (`P.02 · FADE.`), a scroll-snap track of full screenshots (swipe + pinch-zoom on touch, ← → on keyboard, Esc to close), and 48px square nav buttons around a `01 / 03` counter. A detail crop opens on the full screenshot it was cut from. Screenshots ship as WebP (full + `-1600` for `srcset`) in `assets/screenshots/<project-id>/`; crops are `crop.webp` at 1200×900.
 
 ### Signature Component: Bracket Frame
 A corner-only accent frame (two 16px L-shaped corners, top-left and bottom-right, 1px Signal Amber lines) around the About section's avatar. Reads as a measurement/crop annotation rather than a decorative border — reinforces the "instrument" half of the North Star even in the one section with the least literal instrumentation.
