@@ -416,17 +416,13 @@ ul { list-style: none; margin: 0; padding: 0; }
   font: 400 13px/1 var(--mono); letter-spacing: .1em; transition: border-color .15s;
 }
 .fp-link:hover { border-top-color: var(--fp-accent-line); }
-/* Card CTA hierarchy: LIVE DEMO is an amber outline button that fills on
-   hover (inset box-shadow, no transform); GitHub sits under it as a quiet
-   text link for technical visitors. Outline, not solid, so Løfte's solid
-   LIVE DEMO stays the one loudest button in the section. */
+/* Card CTA hierarchy: LIVE DEMO is a solid amber button (same fill as
+   Løfte's), GitHub sits under it as a quiet text link for technical
+   visitors. Reusing .fp-btn's own solid style keeps one consistent
+   "this is the primary action" signal across flagship and cards. */
 .fp-btn--ghost {
   width: 100%; min-height: 48px; padding: 0 16px; justify-content: space-between;
-  background: transparent; color: var(--fp-accent); border-color: var(--fp-accent-line);
-  transition: box-shadow .15s, border-color .15s, color .15s;
 }
-.fp-btn--ghost:hover { border-color: var(--fp-accent); color: var(--fp-on-accent); box-shadow: inset 0 0 0 100px var(--fp-accent); }
-.fp-btn--ghost:focus-visible { outline: 2px solid var(--fp-accent); outline-offset: 3px; }
 .fp-link--secondary {
   min-height: 44px; padding: 0 16px; border-top: 0; color: var(--fp-muted);
   font-size: 12px; transition: color .15s;
