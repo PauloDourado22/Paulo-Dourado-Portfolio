@@ -159,7 +159,9 @@ function fpCard(p) {
     <p class="fp-card__desc">${fpEsc(fpT(p.desc))}</p>
     ${fpTags(p.tags)}
     <div class="fp-links">
-      ${p.links.map((l) => `<a class="fp-link${l.secondary ? " fp-link--secondary" : ""}" href="${l.href}" target="_blank" rel="noopener"><span>${fpEsc(fpT(l.label))}</span><span aria-hidden="true">↗</span></a>`).join("")}
+      ${p.links.map((l) => l.secondary
+        ? `<a class="fp-link fp-link--secondary" href="${l.href}" target="_blank" rel="noopener"><span>${fpEsc(fpT(l.label))}</span><span aria-hidden="true">↗</span></a>`
+        : `<a class="fp-btn fp-btn--ghost" href="${l.href}" target="_blank" rel="noopener"><span>${fpEsc(fpT(l.label))}</span><span aria-hidden="true">↗</span></a>`).join("")}
     </div>
   </article>`;
 }
