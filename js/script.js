@@ -48,7 +48,7 @@ const PROJECTS = [
     },
     tags: ["Next.js", "Express", "Stripe API"],
     link: { href: "https://github.com/PauloDourado22/Fade.", label: { en: "VIEW ON GITHUB", pt: "VER NO GITHUB" } },
-    crop: { src: SHOTS + "fade/crop.webp", w: 1200, h: 900, opens: 1, alt: { en: "Fade. date and time-slot picker", pt: "Seletor de data e horário do Fade." } },
+    crop: { src: SHOTS + "fade/crop.webp", w: 1200, h: 900, opens: 0, alt: { en: "Fade. landing page — \"Great hair, zero wait.\"", pt: "Página inicial do Fade. — \"Great hair, zero wait.\"" } },
     shots: [
       { src: SHOTS + "fade/crew-menu.webp", sm: SHOTS + "fade/crew-menu-1600.webp", w: 3156, h: 1684, alt: { en: "Fade. crew and menu listing with prices", pt: "Equipa e menu de serviços do Fade., com preços" } },
       { src: SHOTS + "fade/booking.webp", sm: SHOTS + "fade/booking-1600.webp", w: 3156, h: 1684, alt: { en: "Fade. booking flow — date and time slot picker", pt: "Marcação no Fade. — seletor de data e horário" } },
@@ -63,7 +63,7 @@ const PROJECTS = [
     },
     tags: ["Next.js", "Express", "SQLite"],
     link: { href: "https://github.com/PauloDourado22/ILDA", label: { en: "VIEW ON GITHUB", pt: "VER NO GITHUB" } },
-    crop: { src: SHOTS + "ilda/crop.webp", w: 1200, h: 900, opens: 1, alt: { en: "ILDA's owner-editable daily menu", pt: "Menu do dia da ILDA, editado pelo proprietário" } },
+    crop: { src: SHOTS + "ilda/crop.webp", w: 1200, h: 900, opens: 0, alt: { en: "ILDA landing page — \"Where you feel like home\"", pt: "Página inicial da ILDA — \"Where you feel like home\"" } },
     shots: [
       { src: SHOTS + "ilda/landing.webp", sm: SHOTS + "ilda/landing-1600.webp", w: 3156, h: 1684, alt: { en: "ILDA landing page — \"Where you feel like home\"", pt: "Página inicial da ILDA — \"Where you feel like home\"" } },
       { src: SHOTS + "ilda/menu-about.webp", sm: SHOTS + "ilda/menu-about-1600.webp", w: 3156, h: 1684, alt: { en: "ILDA's live, owner-editable daily menu, scrolling into the About/Space gallery", pt: "Menu do dia da ILDA, editável pelo proprietário, a seguir para a galeria do espaço" } },
