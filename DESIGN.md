@@ -223,6 +223,14 @@ One component for every button on the site — hero, contact, Løfte's CTA, proj
 ### Text links (`.text-link`)
 Amber mono 13px, 0.08em, weight 500, at least 44px tall. Hover → `--accent-hover`; pressed → underline. **Quiet** variant (`.text-link--quiet`): 12px in `--text-muted`, turning amber on hover — used for VIEW ON GITHUB under a LIVE DEMO button.
 
+### Arrows (Hairline)
+One arrow for the whole site, drawn as inline SVG (`<svg class="arr">`, or `arrow(dir)` in `script.js`) — never a font glyph like → ↗ ↓, which all render at different weights.
+- **Shape:** a long shaft with an open 90° head, square line ends and mitred corner, like an engineering-drawing leader line. 1px line at 16px (20px in the lightbox's 48px buttons).
+- **Direction:** points right by default; `.arr--ne` (external links: LIVE DEMO, GITHUB, VIEW CREDENTIAL), `.arr--up` (BACK TO TOP), `.arr--down` (VIEW CERTIFICATIONS), `.arr--left` (lightbox previous). Rotation is static.
+- **Color:** `currentColor`, so it always matches its label.
+- **Hover / focus:** the shaft extends from its short resting length to full length (`stroke-dashoffset`, 0.22s). Nothing moves. Disabled controls keep the short shaft.
+- The language caret (▾/▴) and close (✕) are not arrows and stay as they are.
+
 ### Cards / Containers
 Transparent, defined by hairline borders. Project cards: 24px padding (16px on mobile), inset ring on hover, joined into one bordered row on desktop.
 

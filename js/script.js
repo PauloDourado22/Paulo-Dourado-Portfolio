@@ -154,7 +154,10 @@ function fpShot(p, set, i, img, cls, sizes, extra = "") {
   return `<button type="button" class="fp-shot ${cls}" data-fp="${p.id}" data-set="${set}" data-i="${i}" data-broken="${fpEsc(ui.broken.toUpperCase())}" aria-label="${fpEsc(label)}">${fpImg(img, sizes)}${extra}</button>`;
 }
 const fpTags = (tags) => `<ul class="fp-tags">${tags.map((t) => `<li>[${fpEsc(t)}]</li>`).join("")}</ul>`;
-const fpArrow = '<span aria-hidden="true">↗</span>';
+// The site's one arrow (DESIGN.md → Arrows). `dir` rotates it: "" = right,
+// "ne" = external link, "up", "down", "left".
+const arrow = (dir = "") => `<svg class="arr${dir ? ` arr--${dir}` : ""}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="arr-shaft" d="M20 12H1"/><path d="M14 6l6 6-6 6"/></svg>`;
+const fpArrow = arrow("ne");
 
 function fpFlagship(p) {
   const rest = p.shots.slice(1).map((s, k) =>
@@ -183,7 +186,7 @@ function fpFlagship(p) {
     <ul class="fp-ledger">
       <li>${fpTags(p.tags)}</li>
       ${p.note ? `<li class="fp-note">${fpEsc(fpT(p.note))}</li>` : ""}
-      <li><a class="btn btn-primary" href="${p.link.href}" ${EXT}>${fpEsc(fpT(p.link.label))} ${fpArrow}</a></li>
+      <li><a class="btn btn-primary" href="${p.link.href}" ${EXT}>${fpEsc(fpT(p.link.label))}${fpArrow}</a></li>
       ${p.wake ? `<li class="fp-note">${fpEsc(fpT(p.wake))}</li>` : ""}
     </ul>
   </article>`;
@@ -441,7 +444,7 @@ const TRANSLATIONS = {
     navOpen: "Open menu", navClose: "Close menu", themeLabel: "Toggle light/dark mode", langLabel: "Change language",
     navAbout: "ABOUT", navProjects: "PROJECTS", navSkills: "SKILLS", navContact: "CONTACT",
     heroSubtext: "Full-stack developer shipping production web apps in Python, JavaScript, and React — four real projects, one already live with real users.",
-    heroBtnProjects: "VIEW PROJECTS →", heroBtnContact: "GET IN TOUCH",
+    heroBtnProjects: "VIEW PROJECTS", heroBtnContact: "GET IN TOUCH",
     heroStat1: "04 BUILDS SHIPPED", heroStat2: "OPEN TO WORK",
     typedLine: "FULL-STACK WEB DEVELOPER  /  PYTHON, JAVASCRIPT & REACT",
     aboutLabel: "01 / ABOUT", aboutMeta: "BUILT TO SHIP",
@@ -450,13 +453,13 @@ const TRANSLATIONS = {
     projectsLabel: "02 / FEATURED PROJECTS", projectsMeta: "04 BUILDS",
     skillsLabel: "03 / SKILLS", skillsMeta: "17 ENTRIES",
     skillLangs: "LANGUAGES", skillFrameworks: "FRAMEWORKS & LIBRARIES", skillTools: "TOOLS", skillLearning: "CURRENTLY LEARNING",
-    viewCerts: "VIEW CERTIFICATIONS ↓",
-    certsLabel: "04 / CERTIFICATIONS", certsMeta: "03 CREDENTIALS", viewCredential: "VIEW CREDENTIAL ↗",
+    viewCerts: "VIEW CERTIFICATIONS",
+    certsLabel: "04 / CERTIFICATIONS", certsMeta: "03 CREDENTIALS", viewCredential: "VIEW CREDENTIAL",
     certDate2: "DEC 2024",
     contactLabel: "05 / CONTACT",
     contactHeadline: "Open to junior full-stack roles and freelance projects.",
     contactSubtext: "Feel free to reach out.",
-    backToTop: "BACK TO TOP ↑",
+    backToTop: "BACK TO TOP",
   },
   pt: {
     metaTitle: "Paulo Dourado — Programador Web Full-Stack",
@@ -465,7 +468,7 @@ const TRANSLATIONS = {
     navOpen: "Abrir menu", navClose: "Fechar menu", themeLabel: "Alternar modo claro/escuro", langLabel: "Mudar idioma",
     navAbout: "SOBRE", navProjects: "PROJETOS", navSkills: "COMPETÊNCIAS", navContact: "CONTACTO",
     heroSubtext: "Programador full-stack a lançar aplicações web em produção em Python, JavaScript e React — quatro projetos reais, um já em produção com utilizadores reais.",
-    heroBtnProjects: "VER PROJETOS →", heroBtnContact: "ENTRAR EM CONTACTO",
+    heroBtnProjects: "VER PROJETOS", heroBtnContact: "ENTRAR EM CONTACTO",
     heroStat1: "04 PROJETOS LANÇADOS", heroStat2: "DISPONÍVEL PARA TRABALHAR",
     typedLine: "PROGRAMADOR FULL-STACK  /  PYTHON, JAVASCRIPT & REACT",
     aboutLabel: "01 / SOBRE", aboutMeta: "CONSTRUÍDO PARA LANÇAR",
@@ -474,13 +477,13 @@ const TRANSLATIONS = {
     projectsLabel: "02 / PROJETOS EM DESTAQUE", projectsMeta: "04 PROJETOS",
     skillsLabel: "03 / COMPETÊNCIAS", skillsMeta: "17 ITENS",
     skillLangs: "LINGUAGENS", skillFrameworks: "FRAMEWORKS E BIBLIOTECAS", skillTools: "FERRAMENTAS", skillLearning: "A APRENDER ATUALMENTE",
-    viewCerts: "VER CERTIFICAÇÕES ↓",
-    certsLabel: "04 / CERTIFICAÇÕES", certsMeta: "03 CREDENCIAIS", viewCredential: "VER CREDENCIAL ↗",
+    viewCerts: "VER CERTIFICAÇÕES",
+    certsLabel: "04 / CERTIFICAÇÕES", certsMeta: "03 CREDENCIAIS", viewCredential: "VER CREDENCIAL",
     certDate2: "DEZ 2024",
     contactLabel: "05 / CONTACTO",
     contactHeadline: "Disponível para cargos full-stack júnior e projetos freelance.",
     contactSubtext: "Sinta-se à vontade para entrar em contacto.",
-    backToTop: "VOLTAR AO TOPO ↑",
+    backToTop: "VOLTAR AO TOPO",
   },
 };
 

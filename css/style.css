@@ -147,6 +147,34 @@ main:focus { outline: none; }
 /* Full-width variant with the ↗ pushed to the far edge (project cards). */
 .btn-block { width: 100%; justify-content: space-between; padding: 0 var(--sp-4); }
 
+/* ===== Arrow (Hairline) =====
+   The site's one arrow, drawn as inline SVG so it has the same weight and
+   size everywhere (font arrows like → ↗ ↓ all differ). It points right by
+   default; the modifiers turn it with a static `rotate` (not animated, so
+   the Transform-Free Interaction Rule is untouched). 1.5 units at 16px is
+   a 1px line, matching the site's hairline borders. */
+.arr {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+.arr--ne { rotate: -45deg; }
+.arr--up { rotate: -90deg; }
+.arr--down { rotate: 90deg; }
+.arr--left { rotate: 180deg; }
+/* Hover/focus: the shaft extends from its short resting length to full
+   length (stroke-dashoffset only — nothing moves). */
+.arr-shaft { stroke-dasharray: 19; stroke-dashoffset: 6; transition: stroke-dashoffset var(--dur-slow) ease; }
+:is(a, button):is(:hover, :focus-visible) .arr-shaft { stroke-dashoffset: 0; }
+[aria-disabled="true"] .arr-shaft,
+:disabled .arr-shaft { stroke-dashoffset: 6; }
+
 /* Text links: amber mono, same size and tracking everywhere. */
 .text-link {
   display: inline-flex;
@@ -555,6 +583,7 @@ html:has(.fp-lb[open]) { overflow: hidden; }
   color: var(--text); font: 400 var(--fs-base)/1 var(--mono); cursor: pointer;
   transition: border-color var(--dur), background-color var(--dur), opacity var(--dur);
 }
+.fp-icon .arr { width: 20px; height: 20px; stroke-width: 1.2; } /* 1.2 × 20/24 = 1px, same line as the 16px arrows */
 .fp-icon:hover { border-color: var(--accent-line); }
 .fp-icon:active { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); }
 /* aria-disabled (not the disabled attribute) so a focused arrow keeps focus
@@ -605,7 +634,7 @@ html:has(.fp-lb[open]) { overflow: hidden; }
 .cert-year { font: 400 var(--fs-sm)/1.4 var(--mono); color: var(--text-faint); }
 .cert-title { font-family: var(--display); font-size: var(--fs-title-sm); }
 .cert-title em { font-family: var(--sans); font-style: normal; font-size: var(--fs-md); color: var(--text-muted); }
-.cert-link { font: 500 var(--fs-sm)/1 var(--mono); letter-spacing: 0.08em; color: var(--accent); transition: color var(--dur); }
+.cert-link { display: inline-flex; align-items: center; gap: var(--sp-2); font: 500 var(--fs-sm)/1 var(--mono); letter-spacing: 0.08em; color: var(--accent); transition: color var(--dur); }
 
 /* ===== Contact ===== */
 .contact-section {
@@ -643,7 +672,7 @@ html:has(.fp-lb[open]) { overflow: hidden; }
   letter-spacing: 0.1em;
   color: var(--text-footnote);
 }
-.footer a { display: inline-flex; align-items: center; min-height: var(--tap); color: var(--text-footnote); transition: color var(--dur); }
+.footer a { display: inline-flex; align-items: center; gap: var(--sp-2); min-height: var(--tap); color: var(--text-footnote); transition: color var(--dur); }
 .footer a:hover { color: var(--accent); }
 .footer a:active { color: var(--accent-hover); }
 
