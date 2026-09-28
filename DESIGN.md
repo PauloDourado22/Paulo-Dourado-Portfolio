@@ -2,98 +2,115 @@
 name: Paulo Dourado — Portfolio
 description: An engineered spec-sheet portfolio for a career-changer proving full-stack range in amber and graphite.
 colors:
-  graphite-black: "#0C0E10"
-  card-surface: "#12141670"
-  ink: "#DEE3E8"
-  slate-muted: "#8E97A0"
-  slate-faint: "#7E8790"
-  slate-footnote: "#767D84"
-  tag-slate: "#AEB6BE"
-  signal-amber: "#E8A63D"
-  amber-hover: "#F2C275"
+  # Dark theme (default). Light-theme values are listed under Colors below.
+  graphite-black: "#0C0E10"   # --bg
+  plate: "#14171A"            # --plate — backing behind screenshots
+  ink: "#DEE3E8"              # --text
+  slate-muted: "#8E97A0"      # --text-muted
+  slate-faint: "#7E8790"      # --text-faint
+  slate-footnote: "#767D84"   # --text-footnote
+  tag-slate: "#AEB6BE"        # --tag-text
+  signal-amber: "#E8A63D"     # --accent
+  amber-hover: "#F2C275"      # --accent-hover
+  amber-press: "#C98A2A"      # --accent-press
   amber-line: "rgba(232, 166, 61, 0.35)"
+  on-accent: "#0C0E10"        # label color on an amber fill
   hairline: "rgba(222, 227, 232, 0.12)"
   hairline-soft: "rgba(222, 227, 232, 0.09)"
   hairline-strong: "rgba(222, 227, 232, 0.22)"
-  shadow-black: "#000000" # base color for the hover-lift/focus shadows, always used at partial alpha (e.g. rgba(0,0,0,0.55)) — never as a flat fill
 typography:
   display:
     fontFamily: "'Space Grotesk', 'Archivo', -apple-system, sans-serif"
-    fontSize: "clamp(3.2rem, 11vw, 11rem)"
+    fontSize: "min(max(3.2rem, 11vw), 16vw, 11rem)"
     fontWeight: 700
     lineHeight: 0.92
     letterSpacing: "-0.03em"
   headline:
     fontFamily: "'Space Grotesk', 'Archivo', -apple-system, sans-serif"
-    fontSize: "clamp(2.5rem, 5vw, 4.5rem)"
+    fontSize: "min(max(4rem, 9vw), 20vw, 7rem)"
+    fontWeight: 700
+    lineHeight: 0.85
+    letterSpacing: "-0.05em"
+  title:
+    fontFamily: "'Space Grotesk', 'Archivo', -apple-system, sans-serif"
+    fontSize: "2rem"
     fontWeight: 700
     lineHeight: 1
     letterSpacing: "-0.03em"
-  title:
-    fontFamily: "'Space Grotesk', 'Archivo', -apple-system, sans-serif"
-    fontSize: "24px"
-    fontWeight: 600
-    lineHeight: 1.2
-    letterSpacing: "normal"
   body:
     fontFamily: "'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    fontSize: "16.5px"
+    fontSize: "1.0625rem"
     fontWeight: 400
-    lineHeight: 1.7
+    lineHeight: 1.6
     letterSpacing: "normal"
   label:
     fontFamily: "'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace"
-    fontSize: "12px"
+    fontSize: "0.8125rem"
     fontWeight: 500
     lineHeight: 1.2
     letterSpacing: "0.08em"
-  # Real, in-use micro-variants of the five named roles above. The frontmatter
-  # schema only supports one fontSize per named role, so every other
-  # deliberate step in the actual type scale is enumerated here instead of
-  # being left as unenumerated (and therefore flagged as drift) each time it
-  # recurs. Values are grouped by which named role they're a variant of.
+  # The whole type scale. CSS custom property in brackets. Every font-size in
+  # style.css uses one of these — nothing else.
   scale:
-    label-xs: "11px" # hero stats row, slideshow counter, skill-box labels, footer
-    label-lg: "13px" # nav logo/links, typed tagline, buttons, section labels, timeline years, cert years, slideshow prev/next
-    body-compact: "14.5px" # secondary project-card descriptions
-    body-snug: "15px" # certification sub-line (bootcamp platform name)
-    body-relaxed: "15.5px" # About section timeline rows
-    body-lead: "19px" # hero subtext, the one place body copy needs more presence than the 16.5px default
-    title-sm: "22px" # certification titles; also covers the About avatar's "PD" mark at 1.4rem (~22.4px)
-    title-lg: "28px" # About section's lead paragraph — see Typography Hierarchy below
-    headline-compact-min: "32px" # Contact headline's fluid floor (clamp(2rem, 5vw, 4.2rem)) — smaller than the shared Headline role's floor since this sentence is longer than a project title
-    headline-compact-max: "67.2px" # Contact headline's fluid ceiling, same clamp
+    fs-2xs: "0.6875rem" # 11px [--fs-2xs] micro labels: hero stats, footer, skill-box labels, lightbox status
+    fs-xs: "0.75rem"    # 12px [--fs-xs] nav links, tags, section meta, quiet links, notes
+    fs-sm: "0.8125rem"  # 13px [--fs-sm] buttons, text links, section labels, years
+    fs-md: "0.9375rem"  # 15px [--fs-md] compact prose: card descriptions, timeline, cert sub-line
+    fs-base: "1.0625rem" # 17px [--fs-base] body, skill list, mobile flagship description
+    fs-lead: "1.1875rem" # 19px [--fs-lead] hero subtext, flagship description
+    fs-title-sm: "1.375rem" # 22px [--fs-title-sm] certification titles
+    fs-title: "1.75rem" # 28px [--fs-title] About lead paragraph, mobile card titles
+    fs-title-lg: "2rem" # 32px [--fs-title-lg] project card titles
+    fs-headline: "clamp(2rem, 5vw, 4.2rem)" # [--fs-headline] contact line, 404 title
+    fs-flagship: "min(max(4rem, 9vw), 20vw, 7rem)" # [--fs-flagship] Løfte title, 64–112px
+    fs-display: "min(max(3.2rem, 11vw), 16vw, 11rem)" # [--fs-display] hero name
 rounded:
   none: "0px"
   pill: "999px"
   circle: "50%"
 spacing:
-  xs: "8px"
-  sm: "16px"
-  md: "24px"
-  lg: "32px"
-  xl: "48px"
-  xxl: "88px"
+  sp-1: "4px"
+  sp-2: "8px"
+  sp-3: "12px"
+  sp-4: "16px"
+  sp-5: "24px"
+  sp-6: "32px"
+  sp-7: "48px"
+  sp-8: "64px"
+  sp-9: "88px"
+  sp-10: "128px"
+sizing:
+  tap: "44px"      # minimum tap target, every link and button
+  control: "48px"  # button height
+  nav: "64px"
 components:
   button-primary:
     backgroundColor: "{colors.signal-amber}"
-    textColor: "{colors.graphite-black}"
+    textColor: "{colors.on-accent}"
     typography: "{typography.label}"
     rounded: "{rounded.none}"
-    padding: "16px 30px"
+    height: "{sizing.control}"
+    padding: "0 32px"
   button-primary-hover:
     backgroundColor: "{colors.amber-hover}"
+  button-primary-pressed:
+    backgroundColor: "{colors.amber-press}"
   button-outline:
     backgroundColor: "transparent"
     textColor: "{colors.ink}"
     typography: "{typography.label}"
     rounded: "{rounded.none}"
-    padding: "16px 30px"
+    height: "{sizing.control}"
+    padding: "0 32px"
+  text-link:
+    textColor: "{colors.signal-amber}"
+    typography: "{typography.label}"
+    height: "{sizing.tap}"
   project-card:
     backgroundColor: "transparent"
     textColor: "{colors.ink}"
     rounded: "{rounded.none}"
-    padding: "36px 32px"
+    padding: "24px 24px 12px"
   theme-toggle:
     backgroundColor: "transparent"
     rounded: "{rounded.pill}"
@@ -109,131 +126,142 @@ components:
 
 This system reads like a well-calibrated piece of measurement equipment, not a marketing brochure. Two ideas run through everything: the *field* — a live particle constellation drifting behind the hero and contact sections, the only genuinely soft, organic element on the page — and the *instrument* — hairline borders, mono-spaced labels, catalog numbers ("P.01"), and section indices ("02 / FEATURED PROJECTS") that treat the page like an annotated spec sheet. The tension between the two is the point: a system precise enough to trust with a production job, animated just enough to prove it isn't a template.
 
-Confirmed anti-references (explicit, from the original design brief): no default purple gradients, no stock "coding" photography, no floating 3D laptop mockups, nothing that reads as generic AI-generated portfolio. The tone throughout is confident but understated — closer to a reliable professional than a flashy startup founder, which matters because the person behind this site is a career-changer from 10+ years in accounting, not a bootcamp grad performing enthusiasm.
+Confirmed anti-references (explicit, from the original design brief): no default purple gradients, no stock "coding" photography, no floating 3D laptop mockups, nothing that reads as generic AI-generated portfolio. The tone throughout is confident but understated — a reliable professional, not a flashy startup founder.
 
 **Key Characteristics:**
 - One saturated color in the entire system (signal amber); everything else is graphite/off-white neutrals.
 - Zero border-radius anywhere except the literal light/dark toggle switch.
-- Flat at rest; the only shadow in the system is a hover-triggered lift, never ambient.
-- Every label, tag, nav item, and button is set in mono and often letter-spaced, separating "instrument readout" text from actual prose.
-- The Featured Projects section is two-tiered and data-driven: Løfte as a flagship "ledger + contact sheet" (all three screenshots visible at once), then P.02–P.04 as three joined cards led by 4:3 detail crops. Every screenshot opens a shared full-screen lightbox.
+- Flat at rest; interaction feedback is color, border and inset shadow — never an outer shadow, never movement.
+- Every label, tag, nav item, and button is set in mono and letter-spaced, separating "instrument readout" text from actual prose.
+- Every value lives in a token. `style.css` opens with the full token set in `:root`; components only reference tokens.
+
+## How to use this file
+
+1. Need a color, font size, spacing step or size? Use an existing token from the frontmatter (the CSS custom property has the same name with `--` in front).
+2. If nothing fits, add the new token here first, then to `:root` in `style.css`. Don't hardcode values in components.
+3. Font sizes are in `rem` so the visitor's browser text-size setting works. Spacing stays in `px`.
 
 ## Colors
 
 Graphite and off-white neutrals carry almost the entire page; amber is reserved and therefore meaningful every time it appears.
 
-### Primary
-- **Signal Amber** (`#E8A63D`): the system's only accent. Marks the active nav link, the typed-tagline cursor color, bracket-frame corner accents, timeline year labels, the flagship border and media-bar borders, hover states on links/buttons/cards, and focus rings. In light mode it deepens to **Amber Deep** (`#A66A00`) to hold contrast against the paler background.
-- **Amber Hover** (`#F2C275`): lightened amber used only as the `:hover` state of amber-background buttons (light mode: `#8A5800`).
-- **Amber Line** (`rgba(232, 166, 61, 0.35)`): translucent amber used exclusively for borders — the flagship card outline, the media caption bar's divider, and focus-ring glows. Never used as a fill.
+| Token | Dark | Light | Used for | Contrast on page bg (dark / light) |
+|---|---|---|---|---|
+| `--bg` | `#0C0E10` | `#F2F1EC` | page background | — |
+| `--plate` | `#14171A` | `#E3E1DA` | backing behind screenshots | — |
+| `--text` | `#DEE3E8` | `#16181B` | headings, primary text | 14.97 / 15.73 |
+| `--tag-text` | `#AEB6BE` | `#4E5257` | bracketed tags, timeline copy | 9.42 / 6.96 |
+| `--text-muted` | `#8E97A0` | `#5E6368` | body copy, descriptions | 6.52 / 5.37 |
+| `--text-faint` | `#7E8790` | `#5E6368` | secondary labels, meta | 5.30 / 5.37 |
+| `--text-footnote` | `#767D84` | `#63686D` | dimmest tier: hero stats, footer | 4.64 / 4.98 |
+| `--accent` | `#E8A63D` | `#8A5800` | the one accent | 9.17 / 5.34 |
+| `--accent-hover` | `#F2C275` | `#6E4600` | hover on amber | 11.74 / 7.31 |
+| `--accent-press` | `#C98A2A` | `#5C3B00` | pressed on amber | 6.59 / 8.92 (label on fill) |
+| `--accent-line` | amber @ 35% | amber @ 40% | amber borders only, never text | — |
+| `--on-accent` | `#0C0E10` | `#F2F1EC` | label on an amber fill | 9.17 / 5.34 |
+| `--border` / `-soft` / `-strong` | ink @ 12/9/22% | near-black @ 14/12/28% | the whole border vocabulary | — |
 
-### Neutral
-- **Graphite Black** (`#0C0E10`): the default (dark-theme) page background. In light mode this role is filled by **Parchment** (`#F2F1EC`), a warm off-white rather than a stark white.
-- **Ink** (`#DEE3E8`): primary text on dark backgrounds (light mode: **Near-Black** `#16181B`).
-- **Slate Muted** (`#8E97A0`): body copy and descriptions — subtext, project descriptions, card paragraphs (light mode: `#6E7378`).
-- **Slate Faint** (`#7E8790`): secondary labels — section meta, project index numbers, placeholder captions (light mode: `#6E7378`, same as Slate Muted since light mode collapses the two).
-- **Slate Footnote** (`#767D84`): the dimmest text — hero stats row, footer copy (light mode: `#63686D`). Deliberately close to Slate Muted in value; a dedicated "dimmest" gray and WCAG AA's 4.5:1 floor leave almost no headroom against this system's near-black background, so the two tiers sit closer together than the original palette intended (was `#5C646C` / `#9A9C96` at ~3.2:1 / ~2.45:1, both failing AA — corrected during a July 2026 accessibility pass).
-- **Tag Slate** (`#AEB6BE`): the color for bracketed tag lists (`[Next.js]`) and timeline row copy (light mode: `#4E5257`).
-- **Hairline / Hairline Soft / Hairline Strong** (`rgba(222,227,232,0.12/0.09/0.22)`, light: `rgba(22,24,27,0.14/0.12/0.28)`): the system's entire border vocabulary. Depth and separation come from layering these three opacities, not from color variation or shadow.
-- **Shadow Black** (`#000000`): the base color behind the system's only shadow (see Elevation & Depth's Hover Lift) — always used at partial alpha (`rgba(0, 0, 0, 0.55)`), never as a flat fill or text color.
+Every text pair clears WCAG AA (4.5:1) in both themes, including on the screenshot plate and on the certificate-row hover tint (lowest: 4.62). The light-theme amber and muted grey were darkened in September 2026 — the old values (`#A66A00` at 3.97:1, `#6E7378` at 4.23:1) failed.
 
 ### The One Voice Rule
-Amber is used on a small minority of any given screen. Its rarity is what makes the active nav link, a hovering card border, or a bracket corner read as *meaningful* rather than decorative. Never introduce a second saturated color; if a new state needs distinguishing, vary opacity or weight within the existing neutral/amber pair instead.
+Amber is used on a small minority of any given screen. Never introduce a second saturated color; if a new state needs distinguishing, vary opacity or weight within the existing neutral/amber pair instead. Known, deliberate tension: the Featured Projects section has four solid amber LIVE DEMO buttons (one per project) — a conscious choice so non-technical visitors go straight to the demos.
 
 ## Typography
 
-**Display Font:** Space Grotesk (with Archivo, system sans fallback)
-**Body Font:** Archivo (with system sans fallback)
-**Label/Mono Font:** IBM Plex Mono (with SFMono-Regular, Consolas fallback)
-
-**Character:** Space Grotesk carries every headline at heavy weight and tight, negative letter-spacing — confident and a little industrial. Archivo stays quiet in the background for anything meant to be read at length. IBM Plex Mono is never used for prose; it exists purely to mark something as label, metadata, or instrumentation.
+**Display Font:** Space Grotesk · **Body Font:** Archivo · **Label/Mono Font:** IBM Plex Mono
 
 ### Hierarchy
-- **Display** (700, `clamp(3.2rem, 11vw, 11rem)`, line-height 0.92, letter-spacing -0.03em, uppercase): the hero name only. The second line is rendered as an outline — transparent fill, 1.5px stroke in the ink color — rather than a second solid weight, so the two lines read as one gesture rather than a repeated pattern.
-- **Headline** (700, `clamp(2.5rem, 5vw, 4.5rem)`, line-height 1, letter-spacing -0.03em): the flagship project title. The contact section's closing line shares the same role and weight but runs a smaller compact clamp (`clamp(2rem, 5vw, 4.2rem)`, documented as `headline-compact-min`/`-max` in the type scale) since it carries a full sentence rather than a short project name.
-- **Title** (600, 24px, line-height ~1.2): secondary project card titles. Two related variants: a weight-500/28px step (`title-lg`) for the About section's lead paragraph, where the larger size needs to carry prose rather than a short label; and a 22px step (`title-sm`) for certification titles and the About avatar's "PD" mark.
-- **Body** (400, 16.5–19px, line-height 1.65–1.7, color Slate Muted, max-width ~640px): all descriptive prose — hero subtext, flagship description, card copy. Never set body text in the ink/primary text color; it stays in the muted role so headlines keep the visual priority.
-- **Label** (500, 11–13px, letter-spacing 0.04–0.14em, IBM Plex Mono, often uppercase): nav links, the typed tagline, section labels ("02 / FEATURED PROJECTS"), buttons, bracketed tags, the slideshow counter, timeline years, and the footer. Letter-spacing widens as size shrinks — 11px labels get the widest tracking (0.14em), the 13px nav logo gets the tightest (0.04em).
+- **Display** (`--fs-display`, 700, line-height 0.92, -0.03em, uppercase): the hero name only. The second line is an outline (transparent fill, 1.5px stroke). The `min(..., 16vw, ...)` cap keeps "DOURADO" on screen when a visitor enlarges text.
+- **Headline** (`--fs-flagship`, 700, line-height 0.85, -0.05em): the Løfte flagship title. `--fs-headline` (fluid 32–67px, line-height 1.1) is the sentence-length variant for the contact line and the 404 title.
+- **Title** (`--fs-title-lg` 32px / `--fs-title` 28px on mobile, 700): project card titles. `--fs-title` at weight 500 is also the About lead paragraph; `--fs-title-sm` is certification titles.
+- **Body** (`--fs-base` 17px, `--fs-lead` 19px for hero subtext and flagship description, `--fs-md` 15px for compact card copy; line-height 1.55–1.65; color `--text-muted`): all prose. Body copy never uses `--text` — headlines keep visual priority.
+- **Label** (IBM Plex Mono, `--fs-2xs`–`--fs-sm`, letter-spacing 0.08–0.14em, usually uppercase): nav links, buttons, section labels, tags, counters, footer. Tracking widens as size shrinks.
 
 ### The Mono-For-Labels Rule
-If it is a label, a tag, a button, a counter, or metadata, it is IBM Plex Mono. If it is a heading, it is Space Grotesk. If it is a sentence someone is meant to read for meaning, it is Archivo. No component mixes these roles.
+If it is a label, a tag, a button, a counter, or metadata, it is IBM Plex Mono. If it is a heading, it is Space Grotesk. If it is a sentence someone is meant to read for meaning, it is Archivo.
 
 ## Layout
 
-Content sections cap at 1240px; the nav and footer run slightly wider at 1440px, keeping chrome from feeling as boxed-in as the reading content. Section padding is generous and consistent: 88px top/bottom on desktop, collapsing to 56px under 700px. The hero gets more room again (110px top / 96px bottom, down to 64/56px on mobile) since it carries the display type.
+Content sections cap at 1240px; nav and footer run to 1440px. Section padding is `--sp-9` (88px) vertical on desktop, `--sp-8` (64px) under 700px. The hero and contact sections get `--sp-10` (128px) on top.
 
-Two breakpoints govern the whole site: **960px** (About and Skills grids collapse from multi-column to single/paired columns; the project grid drops from 3 columns to 1) and **700px** (nav collapses to a hamburger + slide-down menu, section padding tightens, cert rows and skill boxes stack).
+Two breakpoints: **960px** (About, Skills and the flagship stack; project cards become a swipe row) and **700px** (nav collapses to a menu button, sections tighten, Løfte's screenshots become a phone-capture swipe row).
 
-The Featured Projects section is the one place layout is data-driven rather than fixed. Tier 1 is a 5/12 + 7/12 grid: title, description and a rule-separated ledger (tags, note, CTA) on the left; a contact sheet on the right (one 16:9 lead shot with amber bracket corners over two 16:10 shots). Tier 2, introduced by a mono `P.02 — P.04` rule, is three cards sharing one bordered row. Under 960px Tier 1 stacks and Tier 2 becomes a CSS scroll-snap swipe row with the next card peeking; under 700px the contact sheet becomes a swipe row too (phone captures when available, desktop shots in landscape frames until then). Swipe rows carry a segmented amber progress bar. There is no click-to-promote anymore — every project is always visible.
-
-Recurring spacing rhythm: 8px for tight internal list gaps (skill list items), 24px for card/grid gaps and timeline columns, 32px for card internal padding, 48px for section-head margins, 88px for section-level rhythm.
+Layout safety rules:
+- Grid columns that hold text use `minmax(0, 1fr)`, never a bare `1fr` — a bare `1fr` won't shrink below its longest word and pushes content off-screen at large text sizes.
+- `body` sets `overflow-wrap: break-word`, so no word can widen the page.
+- The nav wraps instead of overflowing when text is enlarged.
+- `section[id]` has `scroll-margin-top` so anchor jumps land below the sticky nav.
 
 ## Elevation & Depth
 
-The system is flat at rest. No surface carries a drop shadow; interactive feedback on Featured Projects uses inset `box-shadow` instead (a 1px inset ring on card hover, an inset fill on the CTA hover). Depth everywhere is conveyed by layering three hairline border opacities (soft/default/strong), not by shadow or color shift.
+Flat at rest. No outer shadows anywhere. Depth comes from layering the three hairline opacities.
 
-### Shadow Vocabulary
-- **Inset Ring** (`box-shadow: inset 0 0 0 1px var(--border-strong)`): card hover in the Featured Projects Tier 2 row — reads as the border firming up, never as elevation. (The earlier outer Hover Lift was retired with the old project grid.)
-- **Focus Ring** (`box-shadow: 0 0 0 2px var(--accent-line)`): not true elevation, but the same mechanism — used on `:focus-visible` in place of a default outline.
-
-### The Flat-By-Default Rule
-Surfaces have no resting shadow. Shadow is a response to interaction state (hover, focus), never an ambient property of a card or container. If a new component seems to need a shadow at rest, that's a signal to add a border instead.
+- **Inset Ring** (`inset 0 0 0 1px var(--border-strong)`): project card hover.
+- **Inset Press** (`inset 0 2px 0 rgba(0,0,0,.25)`): pressed primary button.
+- **Focus Ring**: `outline: 2px solid var(--accent); outline-offset: 3px` on `:focus-visible`, set once globally for every element. Inside menus the offset is -2px so the ring stays inside the row.
 
 ### The Transform-Free Interaction Rule
-Hover and interactive-state transitions never animate `transform`. This is a hard-won rule, not a stylistic preference: the site's click-to-promote flagship swap and a `transform`-based hover-lift once fought for control of the same CSS property and silently desynced mid-animation. Box-shadow, border-color, and opacity are the only properties used for interactive feedback; if motion on position is ever needed again, it must be scoped so it can never coexist with a `transition: transform` on the same element.
-
-**One explicit exception:** the theme-toggle dot (`.theme-switch-dot`) slides via `transform: translateX()`. It was originally built on `margin-left` instead specifically to honor this rule, but `margin-left` is a layout-triggering property (a detector flagged it during a July 2026 accessibility/performance pass), and the toggle shares no DOM, no shared class, and no interaction path with the project-card/flagship-swap elements that caused the original bug — there is nothing for it to desync with. Any future component considered for a similar exception must clear the same bar: fully isolated from swap/promote logic, with no other `transition: transform` anywhere nearby.
+Hover, pressed, focus and open/close transitions never animate `transform`. Use color, border-color, background-color, box-shadow, opacity, clip-path and visibility. (Historical reason: a transform-based hover once fought a transform-based card swap on the same element.) **One exception:** the theme-toggle dot slides with `translateX()`; it shares no element or class with anything else that animates. The language caret swaps glyphs (▾/▴) instead of rotating.
 
 ## Shapes
 
-Every corner in the system is square. `border-radius` is never set to a non-zero value anywhere except the theme toggle (a 999px pill track with a circular sliding dot) — the one place a rounded form is functionally required to read as a switch. Borders are uniformly 1px hairlines; there is no border-width scale. The bracket-frame around the About section's avatar placeholder is the system's signature form gesture: not a full border, but two accent-colored L-shaped corners (top-left and bottom-right only), evoking a technical crop-mark or registration frame rather than a picture frame.
-
-### The Square Corner Rule
-`border-radius: 0` is the invariant, without exception, for every button, card, input, media container, and section. The only rounded elements are the theme toggle's track (pill) and dot (circle) — both required to read as a physical switch, not a stylistic choice. Any new component should default to zero radius; introducing a rounded card or button breaks the "instrument panel" identity.
+Every corner is square. `border-radius` is non-zero only on the theme toggle (pill track, circular dot). Borders are 1px hairlines. The About photo sits in a **bracket frame**: two amber L-shaped corners (top-left, bottom-right), like a crop mark.
 
 ## Components
 
-### Buttons
-- **Shape:** hard rectangular corners (`{rounded.none}`), 1px border only on the outline variant.
-- **Primary:** Signal Amber background, Graphite Black text, IBM Plex Mono label typography, `16px 30px` padding (`13px 24px` in the `.btn-sm` variant used on the flagship's CTA).
-- **Outline:** transparent background, Hairline Strong border, Ink text; hover swaps both border and text to Signal Amber.
-- **Hover:** primary swaps background to Amber Hover; outline swaps border/text to Signal Amber. Both transition over 0.2s ease. Neither variant moves or scales on hover.
-- **Text Link:** used for secondary-card CTAs ("VIEW ON GITHUB ↗") — no border or background at all, just Signal Amber mono text that lightens to Amber Hover.
+Every component has the same five states: **rest, hover, pressed (`:active`), keyboard focus (`:focus-visible`), and disabled** (where disabling is possible).
+
+### Buttons (`.btn`)
+One component for every button on the site — hero, contact, Løfte's CTA, project cards, 404 page.
+- 48px tall (`--ctl-h`), 32px side padding, mono 13px, weight 500, 0.08em tracking, uppercase, square corners.
+- **Primary** (`.btn-primary`): amber fill, `--on-accent` label. Hover → `--accent-hover`. Pressed → `--accent-press` + inset press shadow.
+- **Outline** (`.btn-outline`): transparent, `--border-strong` border, ink label. Hover → amber border and label. Pressed → adds a 14% amber tint.
+- **Disabled** (`:disabled` / `aria-disabled="true"`): transparent, hairline border, faint label, 50% opacity, `not-allowed` cursor.
+- **Block** (`.btn-block`): full width, label left and ↗ right — used for the cards' LIVE DEMO.
+- Transitions: 0.15s on color, background-color, border-color, box-shadow.
+
+### Text links (`.text-link`)
+Amber mono 13px, 0.08em, weight 500, at least 44px tall. Hover → `--accent-hover`; pressed → underline. **Quiet** variant (`.text-link--quiet`): 12px in `--text-muted`, turning amber on hover — used for VIEW ON GITHUB under a LIVE DEMO button.
 
 ### Cards / Containers
-- **Corner Style:** square (`{rounded.none}`), always.
-- **Background:** transparent — cards are defined entirely by their border, not a fill color.
-- **Shadow Strategy:** none at rest and no outer shadows at all; Tier 2 project cards firm up with an inset 1px ring on hover.
-- **Border:** Tier 2 cards share one Hairline-bordered row with Hairline dividers; screenshots sit in Hairline frames on a dark plate, and the Tier 1 lead shot is marked with four amber bracket corners rather than an Amber Line outline.
-- **Internal Padding:** 20px (16px on mobile) inside Tier 2 cards; Tier 1 has no card box at all — its structure comes from the grid and ledger rules.
+Transparent, defined by hairline borders. Project cards: 24px padding (16px on mobile), inset ring on hover, joined into one bordered row on desktop.
 
 ### Navigation
-- Sticky, blurred translucent background (`backdrop-filter: blur(8px)` over 88%-opacity page background), single hairline bottom border, no shadow.
-- Logo and links are IBM Plex Mono, uppercase-tracked; inactive links sit in Slate Faint and shift to Signal Amber on hover or when active.
-- Theme toggle is a pill switch with a sliding circular dot — the system's only rounded shape, functioning exactly like a physical light switch (dot travels left-to-right between dark/light).
-- Mobile (≤700px): links collapse behind a hamburger into a full-width dropdown sharing the page background and a hairline border.
+- Sticky, 88%-opacity background with an 8px blur, one hairline bottom border.
+- Logo and links are mono; links sit in `--text-faint` and turn amber on hover or when their section is in view. Every link is at least 44px tall.
+- **Mobile (≤700px):** a 44×44 menu button (two bars that fade to ✕). The menu unrolls with opacity + clip-path, reports `aria-expanded`, moves focus to the first link, and closes on Esc (focus returns to the button), on an outside tap, or when a link is chosen. Without JavaScript the links show inline instead.
+- Theme toggle: a 52×26 pill with an invisible 60×44 hit area.
+- A **skip link** ("SKIP TO CONTENT") appears on the first Tab press.
 
-### Language Switch
-A floating `[EN ▾]` bracket readout, fixed bottom-right (16px inset on mobile, 32px on desktop), independent of the nav — a deliberately different placement/idiom from the nav's own theme toggle, since this is a page-level utility rather than a nav item. Clicking it opens a square-cornered dropdown listing ENGLISH/PORTUGUÊS with their two-letter codes, Hairline Strong border, no shadow, selected option in Signal Amber. Translates the page's reusable copy via a `TRANSLATIONS` dictionary keyed by `data-i18n` attributes, plus per-project `{ en, pt }` fields for descriptions/link labels/notes; proper nouns (project names, tech tags, cert institutions) are identical in both languages and aren't tagged. Choice persists via `localStorage`, same pattern as the theme toggle.
+### Language switch
+A floating `[EN ▾]` button fixed bottom-right (16px inset on mobile, 32px on desktop). The menu opens above it with a fade, but comes after it in the DOM so Tab reaches the options next. Options use `aria-pressed`; choosing one or pressing Esc returns focus to the button; tabbing away closes it. Switching language also updates `<html lang>`, the page title, the meta description and every screen-reader label (`data-i18n-label`).
 
 ### Signature Component: Project Contact Sheet + Lightbox
-Løfte's screenshots are laid out like a photographer's contact sheet: a 16:9 lead frame with amber bracket corners and a mono `01` number chip, over two 16:10 frames numbered `02`/`03`, all visible at once instead of hidden behind slideshow arrows. Every screenshot (and every Tier 2 detail crop) is a `<button>` that opens one shared native `<dialog>` lightbox: solid page-colored background, a mono title bar (`P.02 · FADE.`), a scroll-snap track of full screenshots (swipe + pinch-zoom on touch, ← → on keyboard, Esc to close), and 48px square nav buttons around a `01 / 03` counter. A detail crop opens on the full screenshot it was cut from. Screenshots ship as WebP (full + `-1600` for `srcset`) in `assets/screenshots/<project-id>/`; crops are `crop.webp` at 1200×900.
+Løfte's screenshots are laid out like a contact sheet: a 16:9 lead frame with amber bracket corners and a `01` chip over two 16:10 frames. Every screenshot is a `<button>` that opens one shared native `<dialog>` lightbox, which fades in and out. The lightbox has a mono title bar, a scroll-snap track (swipe, pinch-zoom, ← →, Esc), and 48px arrow buttons around a `01 / 03` counter. Arrows use `aria-disabled` at the ends so keyboard focus is never lost.
 
-### Signature Component: Bracket Frame
-A corner-only accent frame (two 16px L-shaped corners, top-left and bottom-right, 1px Signal Amber lines) around the About section's avatar. Reads as a measurement/crop annotation rather than a decorative border — reinforces the "instrument" half of the North Star even in the one section with the least literal instrumentation.
+## States
+
+- **Loading:** each lightbox slide shows a plate panel with "LOADING" and a thin amber indeterminate bar until its image arrives.
+- **Error:** a lightbox image that fails shows "SCREENSHOT DIDN'T LOAD" with a RETRY outline button. A card or contact-sheet image that fails shows its plate with "IMAGE UNAVAILABLE" instead of a broken-image icon.
+- **Empty / no JavaScript:** the projects section shows a `<noscript>` list of all four projects with LIVE DEMO links.
+- **404:** `404.html` — mono amber "404 / PAGE NOT FOUND" label, headline, one line of copy, one primary button back home. Follows the visitor's saved theme and language.
+- **Motion libraries missing:** if three.js or GSAP fails to load, the page works without them; the typed line appears as plain text after 1.5s.
+- **Reduced motion:** with `prefers-reduced-motion`, there is no smooth scrolling, no blinking cursor, no typewriter or entrance animation, near-instant fades, and the particle field is drawn as one still frame.
+- **Forms:** the site has none. Contact is a mailto button, with the address also shown as selectable text for visitors without a mail app.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** keep `border-radius: 0` on every new component; the only exception is a toggle-style control that must read as a physical switch.
-- **Do** use IBM Plex Mono for anything that is a label, tag, button, counter, or piece of metadata — never for prose.
-- **Do** keep Signal Amber to a small minority of any screen; treat every additional use of a saturated color as a violation of the One Voice Rule.
-- **Do** build hover/interactive feedback from `box-shadow`, `border-color`, and `opacity` only.
-- **Do** default new cards and containers to a transparent background defined by a hairline border, not a filled surface.
+- **Do** take every value from a token; add new tokens here first.
+- **Do** give every new button or link all five states and a 44px tap area.
+- **Do** use `minmax(0, 1fr)` for grid columns that hold text.
+- **Do** build interactive feedback from color, border, background, box-shadow, opacity and clip-path only.
+- **Do** keep amber to a small minority of any screen.
 
 ### Don't:
 - **Don't** add `border-radius` to a button, card, input, or media container.
-- **Don't** animate `transform` on anything that is also styled with a CSS `transition` on `transform` elsewhere — this exact conflict already caused a real, hard-to-diagnose bug once.
-- **Don't** give any surface a resting/ambient shadow; shadow only exists as a hover or focus response.
-- **Don't** introduce a second saturated accent color alongside Signal Amber.
-- **Don't** label a static mockup or design exploration "Live Demo" — that label is reserved for something actually deployed and functional; use "Design Exploration" or equivalent instead.
+- **Don't** animate `transform` in an interactive transition.
+- **Don't** give any surface a resting shadow or any outer shadow.
+- **Don't** introduce a second saturated accent color.
+- **Don't** hardcode a hex, px font size or spacing value in a component.
+- **Don't** label a static mockup "Live Demo" — that label means deployed and working.

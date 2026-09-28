@@ -1,3 +1,7 @@
 .DS_Store
 .impeccable/
 .vscode/
+
+# Original PNG captures stay on this computer as sources for the WebP files,
+# but are not deployed (the site only loads the .webp versions).
+assets/screenshots/**/*.png

@@ -2,7 +2,7 @@
 
 My personal portfolio site.
 
-**Live:** https://paulodourado22.github.io/Paulo-Dourado-Portfolio/
+**Live:** https://paulodourado.dev
 
 I spent 10+ years in accounting before switching into development, so I don't have a CS degree or a bootcamp cohort to point to — I have the things I've built. This site exists to put those in front of the two people who actually decide whether to work with me: recruiters screening for junior full-stack roles, and small businesses deciding whether to hire me for a freelance project.
 

@@ -31,15 +31,17 @@ Together, the pitch is: "I can both ship an ambitious personal product and deliv
 - Language switching is client-side only, matching the "no build step" constraint: a `TRANSLATIONS` dictionary in `script.js` covers reusable site copy, keyed by `data-i18n` attributes in the HTML; each project's description/link-label/note carries its own `{ en, pt }` pair since that copy is unique per project. Choice persists via `localStorage`, same pattern as the theme toggle. Proper nouns (project names, tech tags, cert institution names) are identical in both languages and aren't tagged.
 - Featured Projects is data-driven and two-tiered: Løfte as the flagship (title, description, ledger of tags/note/LIVE DEMO, and all three screenshots in a contact sheet), then Fade., ILDA and Fairweather as three joined cards led by 4:3 detail crops of the UI that proves each one. Every project is always visible — the old click-to-promote swap was removed because on mobile it swapped content off-screen and looked broken. Design came from a Claude Design handoff (option 1b, square phone frames).
 - Screenshots: every image opens a shared native `<dialog>` lightbox (swipe, pinch-zoom, keyboard, Esc). On ≤960px the cards become a scroll-snap swipe row; on ≤700px so do Løfte's screenshots. Images live in `assets/screenshots/<project-id>/` as WebP (full size + `-1600`) with plain lowercase filenames; the original PNG captures stay alongside as sources. Løfte's mobile row now uses real portrait phone captures (`lofte-m-landing/login/dashboard.webp`, 780×1688, native device screenshots) instead of the desktop-shot fallback.
-- Deployed target: GitHub Pages. No backend, no CMS, no build step.
+- Deployed target: GitHub Pages (custom domain paulodourado.dev). No backend, no CMS, no build step. Original PNG captures are kept locally but git-ignored; only the WebP versions deploy.
 - Visual direction: dark-mode-first "Field" design (amber/graphite palette, mono/display/sans type stack, restrained particle-field motion on hero/contact), established via earlier Claude Design mockup exploration.
 
 ## Capabilities and Constraints
 
-- No backend or CMS — content is static; the theme toggle and project-promotion click are the only dynamic behavior.
+- No backend or CMS — content is static. Dynamic behavior is limited to the theme toggle, the language switch, the mobile menu and the screenshot lightbox.
+- Every page state is designed: lightbox loading/error, broken-image fallback, a no-JavaScript project list, a 404 page, and reduced-motion handling (see DESIGN.md's States section).
+- Tap targets are at least 44×44px, font sizes are in rem (browser text size is respected), and the layout holds at 200% text down to 320px wide.
 - Must remain fully responsive down to ~360px width.
 - No build step required, though GSAP and Three.js load via CDN for hero/contact motion and text reveals.
-- Both ILDA and Fade. are now complete at 3/3 real screenshots each.
+- Both ILDA and Fade. are complete at 3/3 real screenshots each. Note: ILDA's live homepage headline has since changed (it's owner-editable), so its screenshots show an older headline; alt text describes the page rather than quoting the copy.
 
 ## Brand Commitments
 
@@ -69,4 +71,4 @@ Together, the pitch is: "I can both ship an ambitious personal product and deliv
 
 ## Accessibility & Inclusion
 
-No product-specific accessibility requirement beyond standard responsive behavior down to ~360px width has been established.
+Target: WCAG 2.1 AA. Every text/background pair passes 4.5:1 in both themes; one global amber focus ring; skip link; keyboard-operable menus and lightbox; screen-reader labels translated with the page; prefers-reduced-motion respected site-wide.

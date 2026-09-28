@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Page not found — Paulo Dourado</title>
+<meta name="description" content="This page doesn't exist. Head back to Paulo Dourado's portfolio." />
+<meta name="robots" content="noindex" />
+<meta name="theme-color" content="#0C0E10" />
+<!-- GitHub Pages serves this file at whatever URL was missing, so every
+     path here is absolute (starts with /). -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&family=Archivo:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/css/style.css?v=20260928" />
+<script>
+  // Match the visitor's saved theme and language from the main site.
+  (function () {
+    var get = function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } };
+    if (get("theme") === "light") document.documentElement.setAttribute("data-theme", "light");
+    if (get("lang") === "pt") document.documentElement.lang = "pt";
+  })();
+</script>
+</head>
+<body>
+<header class="nav-wrap">
+  <nav class="nav" aria-label="Main">
+    <a href="/" class="nav-logo">PAULO&nbsp;DOURADO</a>
+  </nav>
+</header>
+
+<main class="notfound">
+  <p class="section-label fp-accent" data-en="404 / PAGE NOT FOUND" data-pt="404 / PÁGINA NÃO ENCONTRADA">404 / PAGE NOT FOUND</p>
+  <h1 class="notfound-title" data-en="This page doesn't exist." data-pt="Esta página não existe.">This page doesn't exist.</h1>
+  <p class="notfound-copy" data-en="The link may be old, or the address has a typo." data-pt="O link pode estar desatualizado, ou o endereço tem um erro.">The link may be old, or the address has a typo.</p>
+  <a href="/" class="btn btn-primary" data-en="BACK TO HOME →" data-pt="VOLTAR AO INÍCIO →">BACK TO HOME →</a>
+</main>
+
+<footer class="footer">
+  <span>© 2026 PAULO DOURADO</span>
+  <a href="mailto:paulodourado22@gmail.com">PAULODOURADO22@GMAIL.COM</a>
+</footer>
+
+<script>
+  if (document.documentElement.lang === "pt") {
+    document.title = "Página não encontrada — Paulo Dourado";
+    document.querySelectorAll("[data-pt]").forEach(function (el) { el.textContent = el.getAttribute("data-pt"); });
+  }
+</script>
+</body>
+</html>

@@ -1,10 +1,25 @@
 // ===== Footer year =====
 document.getElementById("year").textContent = new Date().getFullYear();
 
+// ===== Safe storage =====
+// localStorage throws in some privacy modes / blocked-cookie setups. Reading
+// it unguarded used to crash this whole file (no projects, no menu), so every
+// read/write goes through these two helpers instead.
+const store = {
+  get(key) { try { return localStorage.getItem(key); } catch { return null; } },
+  set(key, value) { try { localStorage.setItem(key, value); } catch { /* not saved — fine */ } },
+};
+
+// Visitors who ask their OS for less motion get no typewriter, no reveal
+// animation and a still particle field.
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 // ===== Language state =====
 // Read once here; applyLang() (language-switch section) applies it on load,
-// which also renders the Featured Projects in that language.
-let currentLang = localStorage.getItem("lang") || "en";
+// which also renders the Featured Projects in that language. Anything other
+// than "en"/"pt" (e.g. a stale saved value) falls back to English.
+const LANGS = ["en", "pt"];
+let currentLang = LANGS.includes(store.get("lang")) ? store.get("lang") : "en";
 
 // ===== Featured Projects =====
 // Two tiers, both rendered from PROJECTS: the `flagship: true` project (Løfte)
@@ -20,8 +35,8 @@ let currentLang = localStorage.getItem("lang") || "en";
 // flagship keeps a single `link` since its source is private.
 //
 // `phones` (Løfte only) holds portrait phone captures for the ≤700px swipe
-// row. Until those exist it's empty, and the row falls back to the desktop
-// shots in landscape frames (see .fp-phones--wide in style.css).
+// row. A project without them falls back to its desktop shots in landscape
+// frames (see .fp-phones--wide in style.css).
 const SHOTS = "assets/screenshots/";
 const PROJECTS = [
   {
@@ -35,6 +50,11 @@ const PROJECTS = [
     note: {
       en: "Source private — exploring turning this into a product.",
       pt: "Código-fonte privado — a explorar transformar isto num produto.",
+    },
+    // The demo runs on a free Render plan that sleeps when idle.
+    wake: {
+      en: "Free hosting: the demo can take ~30s to wake up.",
+      pt: "Alojamento gratuito: a demo pode demorar ~30s a arrancar.",
     },
     shots: [
       { src: SHOTS + "lofte/landing.webp", sm: SHOTS + "lofte/landing-1600.webp", w: 3156, h: 1684, alt: { en: "Løfte landing page — Keep your løfte", pt: "Página inicial do Løfte — Keep your løfte" } },
@@ -56,11 +76,13 @@ const PROJECTS = [
     tags: ["Next.js", "Express", "Stripe API"],
     links: [
       { href: "https://fade-nu.vercel.app", label: { en: "LIVE DEMO", pt: "DEMO AO VIVO" } },
-      { href: "https://github.com/PauloDourado22/Fade.", label: { en: "VIEW ON GITHUB", pt: "VER NO GITHUB" }, secondary: true },
+      { href: "https://github.com/PauloDourado22/Fade", label: { en: "VIEW ON GITHUB", pt: "VER NO GITHUB" }, secondary: true },
     ],
     crop: { src: SHOTS + "fade/crop.webp", w: 1200, h: 900, opens: 0, alt: { en: "Fade. landing page — \"Great hair, zero wait.\"", pt: "Página inicial do Fade. — \"Great hair, zero wait.\"" } },
     shots: [
-      { src: SHOTS + "fade/crew-menu.webp", sm: SHOTS + "fade/crew-menu-1600.webp", w: 3156, h: 1684, alt: { en: "Fade. crew and menu listing with prices", pt: "Equipa e menu de serviços do Fade., com preços" } },
+      // One capture shows both the landing hero and the crew/menu listing
+      // below it — the card's crop is cut from its top.
+      { src: SHOTS + "fade/crew-menu.webp", sm: SHOTS + "fade/crew-menu-1600.webp", w: 3156, h: 1684, alt: { en: "Fade. landing page with the crew and menu listing", pt: "Página inicial do Fade. com a equipa e o menu de serviços" } },
       { src: SHOTS + "fade/booking.webp", sm: SHOTS + "fade/booking-1600.webp", w: 3156, h: 1684, alt: { en: "Fade. booking flow — date and time slot picker", pt: "Marcação no Fade. — seletor de data e horário" } },
       { src: SHOTS + "fade/confirmation.webp", sm: SHOTS + "fade/confirmation-1600.webp", w: 3156, h: 1684, alt: { en: "Fade. booking confirmation screen", pt: "Ecrã de confirmação de marcação do Fade." } },
     ],
@@ -76,9 +98,11 @@ const PROJECTS = [
       { href: "https://ilda-ruby.vercel.app", label: { en: "LIVE DEMO", pt: "DEMO AO VIVO" } },
       { href: "https://github.com/PauloDourado22/ILDA", label: { en: "VIEW ON GITHUB", pt: "VER NO GITHUB" }, secondary: true },
     ],
-    crop: { src: SHOTS + "ilda/crop.webp", w: 1200, h: 900, opens: 0, alt: { en: "ILDA landing page — \"Where you feel like home\"", pt: "Página inicial da ILDA — \"Where you feel like home\"" } },
+    // The homepage headline is owner-editable (that's the CMS), so the alt
+    // text describes the page rather than quoting copy that can change.
+    crop: { src: SHOTS + "ilda/crop.webp", w: 1200, h: 900, opens: 0, alt: { en: "ILDA café landing page hero", pt: "Topo da página inicial do café ILDA" } },
     shots: [
-      { src: SHOTS + "ilda/landing.webp", sm: SHOTS + "ilda/landing-1600.webp", w: 3156, h: 1684, alt: { en: "ILDA landing page — \"Where you feel like home\"", pt: "Página inicial da ILDA — \"Where you feel like home\"" } },
+      { src: SHOTS + "ilda/landing.webp", sm: SHOTS + "ilda/landing-1600.webp", w: 3156, h: 1684, alt: { en: "ILDA café landing page", pt: "Página inicial do café ILDA" } },
       { src: SHOTS + "ilda/menu-about.webp", sm: SHOTS + "ilda/menu-about-1600.webp", w: 3156, h: 1684, alt: { en: "ILDA's live, owner-editable daily menu, scrolling into the About/Space gallery", pt: "Menu do dia da ILDA, editável pelo proprietário, a seguir para a galeria do espaço" } },
       { src: SHOTS + "ilda/about-visit.webp", sm: SHOTS + "ilda/about-visit-1600.webp", w: 3156, h: 1684, alt: { en: "ILDA's About section with hours, contact details, and a mock location map", pt: "Secção Sobre da ILDA com horários, contactos e um mapa de exemplo" } },
     ],
@@ -103,8 +127,14 @@ const PROJECTS = [
 ];
 
 const FP_UI = {
-  en: { open: "Open screenshot", close: "Close", prev: "Previous screenshot", next: "Next screenshot" },
-  pt: { open: "Abrir captura de ecrã", close: "Fechar", prev: "Captura anterior", next: "Captura seguinte" },
+  en: {
+    open: "Open screenshot", close: "Close", prev: "Previous screenshot", next: "Next screenshot",
+    loading: "Loading", failed: "Screenshot didn't load", retry: "Retry", broken: "Image unavailable",
+  },
+  pt: {
+    open: "Abrir captura de ecrã", close: "Fechar", prev: "Captura anterior", next: "Captura seguinte",
+    loading: "A carregar", failed: "A captura não carregou", retry: "Tentar de novo", broken: "Imagem indisponível",
+  },
 };
 let fpLang = "en";
 const fpT = (v, lang = fpLang) => (typeof v === "string" ? v : v[lang] ?? v.en);
@@ -112,16 +142,19 @@ const fpT = (v, lang = fpLang) => (typeof v === "string" ? v : v[lang] ?? v.en);
 const fpEsc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const fpPad = (n) => String(n).padStart(2, "0");
 const FP_CORNERS = ["tl", "tr", "bl", "br"].map((c) => `<span class="fp-corner fp-corner--${c}"></span>`).join("");
+const EXT = 'target="_blank" rel="noopener"';
 
 function fpImg(img, sizes) {
   const srcset = img.sm ? ` srcset="${img.sm} 1600w, ${img.src} ${img.w}w" sizes="${sizes}"` : "";
   return `<img src="${img.src}"${srcset} width="${img.w}" height="${img.h}" alt="${fpEsc(fpT(img.alt))}" loading="lazy" decoding="async">`;
 }
 function fpShot(p, set, i, img, cls, sizes, extra = "") {
-  const label = `${FP_UI[fpLang].open}: ${fpT(img.alt)}`;
-  return `<button type="button" class="fp-shot ${cls}" data-fp="${p.id}" data-set="${set}" data-i="${i}" aria-label="${fpEsc(label)}">${fpImg(img, sizes)}${extra}</button>`;
+  const ui = FP_UI[fpLang];
+  const label = `${ui.open}: ${fpT(img.alt)}`;
+  return `<button type="button" class="fp-shot ${cls}" data-fp="${p.id}" data-set="${set}" data-i="${i}" data-broken="${fpEsc(ui.broken.toUpperCase())}" aria-label="${fpEsc(label)}">${fpImg(img, sizes)}${extra}</button>`;
 }
 const fpTags = (tags) => `<ul class="fp-tags">${tags.map((t) => `<li>[${fpEsc(t)}]</li>`).join("")}</ul>`;
+const fpArrow = '<span aria-hidden="true">↗</span>';
 
 function fpFlagship(p) {
   const rest = p.shots.slice(1).map((s, k) =>
@@ -150,7 +183,8 @@ function fpFlagship(p) {
     <ul class="fp-ledger">
       <li>${fpTags(p.tags)}</li>
       ${p.note ? `<li class="fp-note">${fpEsc(fpT(p.note))}</li>` : ""}
-      <li><a class="fp-btn" href="${p.link.href}" target="_blank" rel="noopener">${fpEsc(fpT(p.link.label))} <span aria-hidden="true">↗</span></a></li>
+      <li><a class="btn btn-primary" href="${p.link.href}" ${EXT}>${fpEsc(fpT(p.link.label))} ${fpArrow}</a></li>
+      ${p.wake ? `<li class="fp-note">${fpEsc(fpT(p.wake))}</li>` : ""}
     </ul>
   </article>`;
 }
@@ -164,11 +198,18 @@ function fpCard(p) {
     ${fpTags(p.tags)}
     <div class="fp-links">
       ${p.links.map((l) => l.secondary
-        ? `<a class="fp-link fp-link--secondary" href="${l.href}" target="_blank" rel="noopener"><span>${fpEsc(fpT(l.label))}</span><span aria-hidden="true">↗</span></a>`
-        : `<a class="fp-btn fp-btn--ghost" href="${l.href}" target="_blank" rel="noopener"><span>${fpEsc(fpT(l.label))}</span><span aria-hidden="true">↗</span></a>`).join("")}
+        ? `<a class="text-link text-link--quiet" href="${l.href}" ${EXT}><span>${fpEsc(fpT(l.label))}</span>${fpArrow}</a>`
+        : `<a class="btn btn-primary btn-block" href="${l.href}" ${EXT}><span>${fpEsc(fpT(l.label))}</span>${fpArrow}</a>`).join("")}
     </div>
   </article>`;
 }
+
+// Error state for card/contact-sheet images: 'error' doesn't bubble, so this
+// listens in the capture phase and swaps the broken image for a plain label.
+document.addEventListener("error", (e) => {
+  const shot = e.target instanceof HTMLImageElement && e.target.closest(".fp-shot");
+  if (shot) shot.classList.add("is-broken");
+}, true);
 
 // Keeps each swipe row's segmented bar (and the active frame) in sync with
 // its scroll position. Listeners bind once per row element.
@@ -222,17 +263,48 @@ function renderProjects(lang = fpLang) {
 // ----- Lightbox -----
 const fpLb = document.getElementById("fp-lb");
 const fpTrack = fpLb.querySelector("[data-lb-track]");
+const fpPrev = fpLb.querySelector("[data-lb-prev]");
+const fpNext = fpLb.querySelector("[data-lb-next]");
 let fpCount = 0, fpTrigger = null;
 const fpIndex = () => Math.round(fpTrack.scrollLeft / Math.max(1, fpTrack.clientWidth));
 function fpLbUpdate() {
   const i = fpIndex();
   fpLb.querySelector("[data-lb-i]").textContent = fpPad(i + 1);
-  fpLb.querySelector("[data-lb-prev]").disabled = i <= 0;
-  fpLb.querySelector("[data-lb-next]").disabled = i >= fpCount - 1;
+  // aria-disabled instead of `disabled`: a disabled button drops keyboard
+  // focus to <body>, which used to break the arrow keys at the last shot.
+  fpPrev.setAttribute("aria-disabled", String(i <= 0));
+  fpNext.setAttribute("aria-disabled", String(i >= fpCount - 1));
 }
 function fpLbGo(d) {
   const i = Math.max(0, Math.min(fpCount - 1, fpIndex() + d));
   fpTrack.scrollTo({ left: i * fpTrack.clientWidth }); // CSS scroll-behavior handles smoothing / reduced motion
+}
+// Each slide starts in a "loading" state and flips to "loaded" or "error"
+// when its image settles. RETRY reloads just that image.
+function fpSlide(img) {
+  const ui = FP_UI[fpLang];
+  return `<li class="fp-lb__slide" data-state="loading">
+    <img src="${img.src}" width="${img.w}" height="${img.h}" alt="${fpEsc(fpT(img.alt))}" decoding="async">
+    <div class="fp-lb__status" role="status">
+      <span class="fp-lb__loading">${fpEsc(ui.loading)}</span><span class="fp-lb__loader" aria-hidden="true"></span>
+      <span class="fp-lb__fail">${fpEsc(ui.failed)}</span>
+      <button type="button" class="btn btn-outline fp-lb__retry fp-lb__fail">${fpEsc(ui.retry)}</button>
+    </div>
+  </li>`;
+}
+function fpWatchSlides() {
+  fpTrack.querySelectorAll(".fp-lb__slide").forEach((li) => {
+    const img = li.querySelector("img");
+    const settle = () => { li.dataset.state = img.naturalWidth ? "loaded" : "error"; };
+    if (img.complete) settle();
+    img.addEventListener("load", settle);
+    img.addEventListener("error", () => { li.dataset.state = "error"; });
+    li.querySelector(".fp-lb__retry").addEventListener("click", () => {
+      li.dataset.state = "loading";
+      const src = img.getAttribute("src").split("?")[0];
+      img.src = `${src}?retry=${Date.now()}`;
+    });
+  });
 }
 function fpOpen(p, set, i, trigger) {
   const imgs = p[set];
@@ -240,8 +312,8 @@ function fpOpen(p, set, i, trigger) {
   fpLb.querySelector("[data-lb-cat]").textContent = p.cat;
   fpLb.querySelector("[data-lb-name]").textContent = p.title;
   fpLb.querySelector("[data-lb-n]").textContent = fpPad(imgs.length);
-  fpTrack.innerHTML = imgs.map((img) =>
-    `<li class="fp-lb__slide"><img src="${img.src}" width="${img.w}" height="${img.h}" alt="${fpEsc(fpT(img.alt))}" decoding="async"></li>`).join("");
+  fpTrack.innerHTML = imgs.map(fpSlide).join("");
+  fpWatchSlides();
   fpLb.showModal();
   fpTrack.scrollTo({ left: i * fpTrack.clientWidth, behavior: "instant" });
   fpLbUpdate();
@@ -254,8 +326,8 @@ document.addEventListener("click", (e) => {
   if (p) fpOpen(p, b.dataset.set, Number(b.dataset.i), b);
 });
 fpLb.querySelector("[data-lb-close]").addEventListener("click", () => fpLb.close());
-fpLb.querySelector("[data-lb-prev]").addEventListener("click", () => fpLbGo(-1));
-fpLb.querySelector("[data-lb-next]").addEventListener("click", () => fpLbGo(1));
+fpPrev.addEventListener("click", () => { if (fpPrev.getAttribute("aria-disabled") !== "true") fpLbGo(-1); });
+fpNext.addEventListener("click", () => { if (fpNext.getAttribute("aria-disabled") !== "true") fpLbGo(1); });
 fpLb.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft") { e.preventDefault(); fpLbGo(-1); }
   if (e.key === "ArrowRight") { e.preventDefault(); fpLbGo(1); }
@@ -267,20 +339,31 @@ fpTrack.addEventListener("scroll", () => requestAnimationFrame(fpLbUpdate), { pa
 fpLb.addEventListener("close", () => { fpTrack.innerHTML = ""; fpTrigger?.focus(); });
 
 // ===== Mobile nav toggle =====
+// Disclosure pattern: the button reports open/closed via aria-expanded; Esc,
+// a tap outside, or picking a link closes it. Focus moves into the menu on
+// open and back to the button when closed with Esc.
 const navToggle = document.getElementById("navToggle");
 const navLinks = document.getElementById("navLinks");
+const navWrap = document.querySelector(".nav-wrap");
 
-navToggle.addEventListener("click", () => {
-  navLinks.classList.toggle("open");
-});
+function setNav(open, { returnFocus = false } = {}) {
+  navLinks.classList.toggle("open", open);
+  navToggle.setAttribute("aria-expanded", String(open));
+  navToggle.setAttribute("aria-label", TRANSLATIONS[currentLang][open ? "navClose" : "navOpen"]);
+  if (open) navLinks.querySelector("a")?.focus();
+  else if (returnFocus) navToggle.focus();
+}
+const navIsOpen = () => navLinks.classList.contains("open");
 
+navToggle.addEventListener("click", () => setNav(!navIsOpen()));
 navLinks.querySelectorAll("a").forEach((link) => {
-  link.addEventListener("click", () => navLinks.classList.remove("open"));
+  link.addEventListener("click", () => { if (navIsOpen()) setNav(false); });
+});
+document.addEventListener("click", (e) => {
+  if (navIsOpen() && !navWrap.contains(e.target)) setNav(false);
 });
 
 // ===== Nav scroll-spy: highlight whichever section is currently in view =====
-// (previously "PROJECTS" was hardcoded as .is-active in the HTML and never
-// moved; this replaces that with the real current section.)
 const navLinkByHash = new Map(
   Array.from(navLinks.querySelectorAll("a")).map((link) => [link.getAttribute("href"), link])
 );
@@ -314,9 +397,10 @@ if (spySections.length) {
 const root = document.documentElement;
 const themeToggle = document.getElementById("themeToggle");
 
+// Particle colors per theme — the light line color matches the light --accent.
 const PALETTE = {
   dark: { point: 0xdee3e8, line: 0xe8a63d },
-  light: { point: 0x16181b, line: 0xa66a00 },
+  light: { point: 0x16181b, line: 0x8a5800 },
 };
 
 // Declared here (not down in the particle-field section) because applyTheme()
@@ -324,6 +408,7 @@ const PALETTE = {
 // before its own declaration line throws a ReferenceError even though the
 // function that uses it isn't called until later.
 const fieldMaterials = []; // { pointMaterial, lineMaterial } per canvas, so theme toggle can recolor them live
+const fieldRenders = [];   // redraw callbacks, used when motion is reduced (no animation loop)
 
 function currentTheme() {
   return root.getAttribute("data-theme") === "light" ? "light" : "dark";
@@ -336,22 +421,24 @@ function applyTheme(theme) {
   recolorFields(theme);
 }
 
-const savedTheme = localStorage.getItem("theme") || "dark";
-applyTheme(savedTheme);
+applyTheme(store.get("theme") === "light" ? "light" : "dark");
 
 themeToggle.addEventListener("click", () => {
   const next = currentTheme() === "light" ? "dark" : "light";
-  localStorage.setItem("theme", next);
+  store.set("theme", next);
   applyTheme(next);
 });
 
 // ===== Language switch (EN / PT) =====
 // Reusable site copy that isn't project data (see PROJECTS' { en, pt } fields
-// above) lives here as flat keys, one object per language. Adding a third
-// language later means adding one more key to this object and a matching
-// { en, pt, xx } slot per project field — no other code needs to change.
+// above) lives here as flat keys, one object per language. `data-i18n` sets
+// an element's text; `data-i18n-label` sets its aria-label.
 const TRANSLATIONS = {
   en: {
+    metaTitle: "Paulo Dourado — Full-Stack Web Developer",
+    metaDesc: "Paulo Dourado — Full-Stack Web Developer. Python/Flask, Node/Express & React. Creator of Løfte.",
+    skipLink: "SKIP TO CONTENT",
+    navOpen: "Open menu", navClose: "Close menu", themeLabel: "Toggle light/dark mode", langLabel: "Change language",
     navAbout: "ABOUT", navProjects: "PROJECTS", navSkills: "SKILLS", navContact: "CONTACT",
     heroSubtext: "Full-stack developer shipping production web apps in Python, JavaScript, and React — four real projects, one already live with real users.",
     heroBtnProjects: "VIEW PROJECTS →", heroBtnContact: "GET IN TOUCH",
@@ -365,12 +452,17 @@ const TRANSLATIONS = {
     skillLangs: "LANGUAGES", skillFrameworks: "FRAMEWORKS & LIBRARIES", skillTools: "TOOLS", skillLearning: "CURRENTLY LEARNING",
     viewCerts: "VIEW CERTIFICATIONS ↓",
     certsLabel: "04 / CERTIFICATIONS", certsMeta: "03 CREDENTIALS", viewCredential: "VIEW CREDENTIAL ↗",
+    certDate2: "DEC 2024",
     contactLabel: "05 / CONTACT",
     contactHeadline: "Open to junior full-stack roles and freelance projects.",
     contactSubtext: "Feel free to reach out.",
     backToTop: "BACK TO TOP ↑",
   },
   pt: {
+    metaTitle: "Paulo Dourado — Programador Web Full-Stack",
+    metaDesc: "Paulo Dourado — Programador Web Full-Stack. Python/Flask, Node/Express e React. Criador do Løfte.",
+    skipLink: "SALTAR PARA O CONTEÚDO",
+    navOpen: "Abrir menu", navClose: "Fechar menu", themeLabel: "Alternar modo claro/escuro", langLabel: "Mudar idioma",
     navAbout: "SOBRE", navProjects: "PROJETOS", navSkills: "COMPETÊNCIAS", navContact: "CONTACTO",
     heroSubtext: "Programador full-stack a lançar aplicações web em produção em Python, JavaScript e React — quatro projetos reais, um já em produção com utilizadores reais.",
     heroBtnProjects: "VER PROJETOS →", heroBtnContact: "ENTRAR EM CONTACTO",
@@ -384,6 +476,7 @@ const TRANSLATIONS = {
     skillLangs: "LINGUAGENS", skillFrameworks: "FRAMEWORKS E BIBLIOTECAS", skillTools: "FERRAMENTAS", skillLearning: "A APRENDER ATUALMENTE",
     viewCerts: "VER CERTIFICAÇÕES ↓",
     certsLabel: "04 / CERTIFICAÇÕES", certsMeta: "03 CREDENCIAIS", viewCredential: "VER CREDENCIAL ↗",
+    certDate2: "DEZ 2024",
     contactLabel: "05 / CONTACTO",
     contactHeadline: "Disponível para cargos full-stack júnior e projetos freelance.",
     contactSubtext: "Sinta-se à vontade para entrar em contacto.",
@@ -396,57 +489,73 @@ const langToggle = document.getElementById("langToggle");
 const langMenu   = document.getElementById("langMenu");
 const langCode   = document.getElementById("langCode");
 const i18nEls    = document.querySelectorAll("[data-i18n]");
+const i18nLabels = document.querySelectorAll("[data-i18n-label]");
+const metaDesc   = document.querySelector('meta[name="description"]');
 const typedEl    = document.getElementById("typedText");
-// Marks "hasn't finished its first type yet" before applyLang()'s initial
-// call below, so that call skips writing the typed line directly — otherwise
-// it'd flash the full string an instant before initReveals()'s typewriter
-// animation resets and re-types it once GSAP loads from its CDN tag.
-if (typedEl) typedEl.dataset.typing = "true";
 
 function applyLang(lang) {
+  const t = TRANSLATIONS[lang];
   currentLang = lang;
   document.documentElement.lang = lang;
+  document.title = t.metaTitle;
+  metaDesc?.setAttribute("content", t.metaDesc);
   langCode.textContent = lang.toUpperCase();
-  langMenu.querySelectorAll("[data-lang]").forEach(b =>
-    b.setAttribute("aria-selected", b.dataset.lang === lang ? "true" : "false"));
-  localStorage.setItem("lang", lang);
+  langMenu.querySelectorAll("[data-lang]").forEach((b) =>
+    b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+  store.set("lang", lang);
   i18nEls.forEach((el) => {
     const key = el.dataset.i18n;
-    if (TRANSLATIONS[lang][key] !== undefined) el.textContent = TRANSLATIONS[lang][key];
+    if (t[key] !== undefined) el.textContent = t[key];
   });
-  // Only overwrites the typed hero line directly (no re-typing animation)
-  // once the initial typewriter has already run — see initReveals() for the
-  // one-time animated version on page load.
-  if (typedEl && !typedEl.dataset.typing) typedEl.textContent = TRANSLATIONS[lang].typedLine;
+  i18nLabels.forEach((el) => {
+    // The menu button's label depends on whether it's open.
+    const key = el === navToggle ? (navIsOpen() ? "navClose" : "navOpen") : el.dataset.i18nLabel;
+    if (t[key] !== undefined) el.setAttribute("aria-label", t[key]);
+  });
+  // While the typewriter is running it owns the line; otherwise write it.
+  if (typedEl && !typedEl.dataset.typing) typedEl.textContent = t.typedLine;
   renderProjects(lang);
 }
 
-function setLangMenu(open) {
-  langMenu.hidden = !open;
+const langIsOpen = () => langSwitch.classList.contains("open");
+function setLangMenu(open, { returnFocus = false } = {}) {
   langSwitch.classList.toggle("open", open);
-  langToggle.setAttribute("aria-expanded", open ? "true" : "false");
+  langToggle.setAttribute("aria-expanded", String(open));
+  if (!open && returnFocus) langToggle.focus();
 }
 
+// Hold the typed line empty for the typewriter (see bootMotion at the end),
+// unless motion is reduced — then applyLang() writes it straight away.
+if (typedEl && !reduceMotion) typedEl.dataset.typing = "true";
 applyLang(currentLang);
 
-langToggle.addEventListener("click", () => setLangMenu(langMenu.hidden));
-langMenu.addEventListener("click", e => {
+langToggle.addEventListener("click", () => setLangMenu(!langIsOpen()));
+langMenu.addEventListener("click", (e) => {
   const btn = e.target.closest("[data-lang]");
   if (!btn) return;
   applyLang(btn.dataset.lang);
-  setLangMenu(false);
+  setLangMenu(false, { returnFocus: true });
 });
-document.addEventListener("click", e => {
-  if (!langSwitch.contains(e.target)) setLangMenu(false);
+document.addEventListener("click", (e) => {
+  if (langIsOpen() && !langSwitch.contains(e.target)) setLangMenu(false);
 });
-document.addEventListener("keydown", e => {
-  if (e.key === "Escape") setLangMenu(false);
+// Close when keyboard focus leaves the switch (e.g. tabbing past the options).
+langSwitch.addEventListener("focusout", (e) => {
+  if (langIsOpen() && !langSwitch.contains(e.relatedTarget)) setLangMenu(false);
+});
+
+// One Escape handler for both menus; focus goes back to whichever button
+// opened the menu. (The lightbox <dialog> handles its own Escape.)
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Escape") return;
+  if (langIsOpen()) setLangMenu(false, { returnFocus: true });
+  if (navIsOpen()) setNav(false, { returnFocus: true });
 });
 
 // ===== Particle field background (hero + contact canvases) =====
 // Lightweight constellation effect: points drift, nearby points connect with
-// a line, and the cursor gently repels points near it. Runs once THREE and
-// GSAP have loaded from the CDN tags in index.html.
+// a line, and the cursor gently repels points near it. Needs three.js from
+// the CDN; with reduced motion it draws one still frame instead of looping.
 
 function recolorFields(theme) {
   const { point, line } = PALETTE[theme];
@@ -454,6 +563,7 @@ function recolorFields(theme) {
     pointMaterial.color.setHex(point);
     lineMaterial.color.setHex(line);
   });
+  fieldRenders.forEach((draw) => draw()); // still frames need a manual redraw
 }
 
 function initParticleFields() {
@@ -510,32 +620,37 @@ function initParticleFields() {
     fieldMaterials.push({ pointMaterial, lineMaterial });
 
     let mx = 999, my = 999;
-    parent.addEventListener("mousemove", (e) => {
-      const r = canvas.getBoundingClientRect();
-      const vw = ((e.clientX - r.left) / r.width) * 2 - 1;
-      const vh = -(((e.clientY - r.top) / r.height) * 2 - 1);
-      const hh = Math.tan(((camera.fov * Math.PI) / 180) / 2) * camera.position.z;
-      mx = vw * hh * camera.aspect;
-      my = vh * hh;
-    });
-    parent.addEventListener("mouseleave", () => { mx = 999; my = 999; });
+    if (!reduceMotion) {
+      parent.addEventListener("mousemove", (e) => {
+        const r = canvas.getBoundingClientRect();
+        const vw = ((e.clientX - r.left) / r.width) * 2 - 1;
+        const vh = -(((e.clientY - r.top) / r.height) * 2 - 1);
+        const hh = Math.tan(((camera.fov * Math.PI) / 180) / 2) * camera.position.z;
+        mx = vw * hh * camera.aspect;
+        my = vh * hh;
+      });
+      parent.addEventListener("mouseleave", () => { mx = 999; my = 999; });
+    }
 
     const maxD2 = 4.4 * 4.4;
     const rep2 = 25;
 
-    updaters.push(() => {
-      for (let i = 0; i < N; i++) {
-        const ix = i * 3;
-        const dx = p[ix] - mx, dy = p[ix + 1] - my;
-        const d2 = dx * dx + dy * dy;
-        if (d2 < rep2 && d2 > 0.01) {
-          const d = Math.sqrt(d2);
-          const fmag = (1 - d / 5) * 0.45;
-          p[ix] += (dx / d) * fmag;
-          p[ix + 1] += (dy / d) * fmag;
+    const draw = () => renderer.render(scene, camera);
+    const step = (move = true) => {
+      if (move) {
+        for (let i = 0; i < N; i++) {
+          const ix = i * 3;
+          const dx = p[ix] - mx, dy = p[ix + 1] - my;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < rep2 && d2 > 0.01) {
+            const d = Math.sqrt(d2);
+            const fmag = (1 - d / 5) * 0.45;
+            p[ix] += (dx / d) * fmag;
+            p[ix + 1] += (dy / d) * fmag;
+          }
+          p[ix] += v[ix] + (home[ix] - p[ix]) * 0.01;
+          p[ix + 1] += v[ix + 1] + (home[ix + 1] - p[ix + 1]) * 0.01;
         }
-        p[ix] += v[ix] + (home[ix] - p[ix]) * 0.01;
-        p[ix + 1] += v[ix + 1] + (home[ix + 1] - p[ix + 1]) * 0.01;
       }
       let s = 0;
       for (let i = 0; i < N && s < maxSeg; i++) {
@@ -550,8 +665,10 @@ function initParticleFields() {
       lGeo.setDrawRange(0, s * 2);
       lGeo.attributes.position.needsUpdate = true;
       pGeo.attributes.position.needsUpdate = true;
-      renderer.render(scene, camera);
-    });
+      draw();
+    };
+    updaters.push(step);
+    fieldRenders.push(draw);
 
     window.addEventListener("resize", () => {
       const nw = parent.clientWidth, nh = parent.clientHeight;
@@ -559,15 +676,19 @@ function initParticleFields() {
       renderer.setSize(nw, nh, false);
       camera.aspect = nw / nh;
       camera.updateProjectionMatrix();
+      if (reduceMotion) draw();
     });
   });
 
-  let raf = 0;
+  if (reduceMotion) {
+    updaters.forEach((fn) => fn(false)); // one still frame, no loop
+    return;
+  }
   const loop = () => {
     updaters.forEach((fn) => fn());
-    raf = requestAnimationFrame(loop);
+    requestAnimationFrame(loop);
   };
-  raf = requestAnimationFrame(loop);
+  requestAnimationFrame(loop);
 }
 
 // ===== GSAP reveals + typewriter =====
@@ -583,14 +704,13 @@ function initReveals() {
   });
 
   if (typedEl) {
-    // dataset.typing flags "animation in progress" so applyLang() (see the
-    // language-switch section above) knows not to overwrite a mid-type
-    // string if someone switches languages in the first ~2 seconds on page
-    // load — it just waits for this animation to finish and leaves the
-    // completed line to reflect whichever language is active by then.
+    // dataset.typing tells applyLang() not to overwrite the line mid-type if
+    // someone switches language in the first couple of seconds; the finished
+    // line always reflects whichever language is active by then.
     typedEl.dataset.typing = "true";
     const full = TRANSLATIONS[currentLang].typedLine;
     const obj = { i: 0 };
+    typedEl.textContent = "";
     gsap.to(obj, {
       i: full.length,
       duration: 2.2,
@@ -605,12 +725,31 @@ function initReveals() {
   }
 }
 
-// ===== Boot: wait for CDN libs, then start motion =====
-(function waitForLibs() {
-  if (window.THREE && window.gsap) {
-    initParticleFields();
-    initReveals();
-  } else {
-    setTimeout(waitForLibs, 100);
-  }
+// ===== Boot: start each motion library as soon as it arrives =====
+// The two CDN scripts load independently and may fail. The page never waits
+// on them: the typed line is already written by applyLang(), the particle
+// field just stays empty without three.js, and the entrance animation only
+// runs if GSAP arrives quickly (running it later would hide content the
+// visitor is already reading).
+function showTypedLine() {
+  if (!typedEl || !typedEl.dataset.typing) return;
+  delete typedEl.dataset.typing;
+  typedEl.textContent = TRANSLATIONS[currentLang].typedLine;
+}
+
+(function bootMotion() {
+  const started = Date.now();
+  let fields = false, reveals = false;
+  (function poll() {
+    const elapsed = Date.now() - started;
+    if (!fields && window.THREE) { fields = true; initParticleFields(); }
+    if (!reveals && window.gsap) {
+      reveals = true;
+      if (!reduceMotion && elapsed < 1500 && window.scrollY < 100) initReveals();
+      else showTypedLine();
+    }
+    // GSAP is late or missing: stop waiting and show the line as plain text.
+    if (!reveals && elapsed >= 1500) showTypedLine();
+    if ((!fields || !reveals) && elapsed < 10000) setTimeout(poll, 100);
+  })();
 })();
